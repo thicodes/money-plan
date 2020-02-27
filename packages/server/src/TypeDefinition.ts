@@ -1,7 +1,6 @@
 import Dataloader from 'dataloader';
 
 import { IAccount } from './modules/account/AccountModel';
-import { IBudget } from './modules/budget/BudgetModel';
 import { ICategory } from './modules/category/CategoryModel';
 import { ICreditCard } from './modules/credit-card/CreditCardModel';
 import { ITransaction } from './modules/transaction/TransactionModel';
@@ -12,7 +11,6 @@ type Key = string;
 
 export type Dataloaders = {
   AccountLoader: Dataloader<Key, IAccount>;
-  BudgetLoader: Dataloader<Key, IBudget>;
   CategoryLoader: Dataloader<Key, ICategory>;
   CreditCardLoader: Dataloader<Key, ICreditCard>;
   TransactionLoader: Dataloader<Key, ITransaction>;
@@ -22,7 +20,6 @@ export type Dataloaders = {
 
 export type GraphQLContext = {
   account?: IAccount;
-  buget?: IBudget;
   category?: ICategory;
   carditCard?: ICreditCard;
   tag?: ITag;
