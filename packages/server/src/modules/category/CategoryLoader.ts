@@ -23,7 +23,7 @@ export default class Category {
   }
 }
 
-export const getLoader = () => new DataLoader((ids: ReadonlyArray<string>) => mongooseLoader(CategortyModel, ids));
+export const getLoader = () => new DataLoader((ids: ReadonlyArray<string>) => mongooseLoader(CategoryModel, ids));
 
 const viewerCanSee = () => true;
 
