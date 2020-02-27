@@ -21,7 +21,7 @@ export type Dataloaders = {
 export type GraphQLContext = {
   account?: IAccount;
   category?: ICategory;
-  carditCard?: ICreditCard;
+  creditCard?: ICreditCard;
   tag?: ITag;
   transaction?: ITransaction;
   user?: IUser;
