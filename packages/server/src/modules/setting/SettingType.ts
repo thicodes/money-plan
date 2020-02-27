@@ -4,28 +4,28 @@ import { globalIdField } from 'graphql-relay';
 import { connectionDefinitions } from '../../core/connection/CustomConnectionType';
 import { registerType, nodeInterface } from '../../interface/NodeInterface';
 
-const CategoryType = registerType(
+const SettingType = registerType(
   new GraphQLObjectType({
-    name: 'Category',
-    description: 'Category data',
+    name: 'Setting',
+    description: 'Setting data',
     fields: () => ({
-      id: globalIdField('Category'),
+      id: globalIdField('Setting'),
       _id: {
         type: GraphQLString,
-        resolve: category => category._id,
+        resolve: setting => setting._id,
       },
       name: {
         type: GraphQLString,
-        resolve: category => category.name,
+        resolve: setting => setting.name,
       },
     }),
     interfaces: () => [nodeInterface],
   }),
 );
 
-export default CategoryType;
+export default SettingType;
 
-export const CategoryConnection = connectionDefinitions({
-  name: 'Category',
-  nodeType: GraphQLNonNull(CategoryType),
+export const SettingConnection = connectionDefinitions({
+  name: 'Setting',
+  nodeType: GraphQLNonNull(SettingType),
 });
