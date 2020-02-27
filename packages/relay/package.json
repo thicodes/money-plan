@@ -1,0 +1,9 @@
+{
+  "name": "@money-plan/relay",
+  "version": "0.0.213",
+  "main": "src/index.ts",
+  "license": "MIT",
+  "dependencies": {
+    "@money-plan/babel": "0.0.1"
+  }
+}
