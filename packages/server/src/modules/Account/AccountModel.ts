@@ -4,7 +4,7 @@ const schema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: false,
+      required: true,
     },
     bank: {
       type: String,
@@ -26,7 +26,7 @@ const schema = new mongoose.Schema(
 );
 
 export interface IAccount extends Document {
-  name?: string;
+  name: string;
   bank?: string;
   kind: string;
 }
