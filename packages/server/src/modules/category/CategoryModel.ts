@@ -17,7 +17,7 @@ const schema = new mongoose.Schema(
 );
 
 export interface ICategory extends Document {
-  name?: string;
+  name: string;
 }
 
 const CategoryModel: Model<ICategory> = mongoose.model('Category', schema);
