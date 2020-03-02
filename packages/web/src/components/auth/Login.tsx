@@ -52,7 +52,7 @@ function Login() {
             <TextField name="email" label="email" />
             <TextField name="password" label="password" type="password" />
             <CardActions>
-              <Link to={'/auth/signUp'}>Does not have an account? Sign Up</Link>
+              <Link to={'/auth/signUp'}>Create an account</Link>
               <Button
                 variant="contained"
                 color="primary"
