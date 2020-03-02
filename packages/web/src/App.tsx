@@ -1,20 +1,27 @@
 import React, { Suspense } from 'react';
 import { RelayEnvironmentProvider } from 'react-relay/hooks';
-import RelayEnvironment from './relay/Environment';
-import ErrorBoundary from './ErrorBoundary';
 import { hot } from 'react-hot-loader';
+import { createBrowserHistory } from 'history';
 
-const UserList = React.lazy(() => import('./UserList'));
+import { SnackbarProvider } from 'notistack';
+import RelayEnvironment from './relay/Environment';
+import RouterRenderer from './routing/RouteRenderer';
+import ErrorBoundary from './ErrorBoundary';
+import routes from './routes';
+import RoutingContext from './routing/RoutingContext';
+import createRouter from './routing/createRouter';
+
+const router = createRouter(routes, createBrowserHistory());
 
 function App() {
   return (
-    <RelayEnvironmentProvider environment={RelayEnvironment}>
-      <ErrorBoundary>
-        <Suspense fallback={'Loading...'}>
-          <UserList />
-        </Suspense>
-      </ErrorBoundary>
-    </RelayEnvironmentProvider>
+    <RoutingContext.Provider value={router.context}>
+      <RelayEnvironmentProvider environment={RelayEnvironment}>
+        <SnackbarProvider>
+          <RouterRenderer />
+        </SnackbarProvider>
+      </RelayEnvironmentProvider>
+    </RoutingContext.Provider>
   );
 }
 
