@@ -1,13 +1,13 @@
-import { installRelayDevTools } from 'relay-devtools';
+// import { installRelayDevTools } from 'relay-devtools';
 import { Environment, Network, RecordSource, Store } from 'relay-runtime';
 import { relayTransactionLogger } from '@money-plan/relay';
 
 import cacheHandler from './cacheHandler';
 
 const __DEV__ = process.env.NODE_ENV === 'development';
-if (__DEV__) {
-  installRelayDevTools();
-}
+// if (__DEV__) {
+//   installRelayDevTools();
+// }
 
 const network = Network.create(cacheHandler);
 
