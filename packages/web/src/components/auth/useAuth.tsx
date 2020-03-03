@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { graphql, readInlineData } from 'react-relay';
 import { useHistory } from '../../routing/useHistory';
+import { useAuth_user } from './__generated__/useAuth_user.graphql';
 
 const useAuthFragment = graphql`
   fragment useAuth_user on User @inline {
@@ -9,7 +10,7 @@ const useAuthFragment = graphql`
   }
 `;
 
-export const useAuth = (useRef: useAuth_user) => {
+export const useAuth = (userRef: useAuth_user) => {
   const history = useHistory();
 
   const user = readInlineData<useAuth_user>(useAuthFragment, userRef);
