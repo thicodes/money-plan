@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory } from '../../routing/useHistory';
 
 export const TOKEN_KEY = 'money-plan';
 
