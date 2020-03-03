@@ -25,7 +25,7 @@ export const routes = [
       {
         path: '/',
         exact: true,
-        component: JSResource('Teste', () => import('./components/Teste')),
+        component: JSResource('Dashboard', () => import('./components/dashboard/Dashboard')),
       },
     ],
   },
