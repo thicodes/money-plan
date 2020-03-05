@@ -17,19 +17,6 @@ import CreditCardType from '../credit-card/CreditCardType';
 
 import { CreditCardLoader, AccountLoader } from '../../loader';
 
-// export const NoteEnityUnion = createUnionType({
-//   name: 'NoteEnityUnion',
-//   types: () => [Property, /* BusinessProperty, */ Supplier, User],
-//   resolveType: value => {
-//     if ('contactType' in value) return Contact;
-//     if ('buildingType' in value) return Property;
-//     if ('supplierType' in value) return Supplier;
-//     if ('firstName' in value) return User;
-//     // if ("property" in value && "addressString" in value) return BusinessProperty;
-//     return undefined;
-//   },
-// });
-
 const TransactionKindUnion = new GraphQLUnionType({
   name: 'TransactionKindUnion',
   types: [AccountType, CreditCardType],
