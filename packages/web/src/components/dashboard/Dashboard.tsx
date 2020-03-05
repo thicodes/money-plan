@@ -1,7 +1,8 @@
 import React from 'react';
+import { Content, Table } from '../ui';
 
 function Dashboard() {
-  return <div>Dashboard</div>;
+  return <div>asdasd</div>;
 }
 
 export default Dashboard;
