@@ -1,4 +1,3 @@
-
 import { GraphQLString, GraphQLNonNull } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 
@@ -6,6 +5,8 @@ import { generateToken } from '../../../auth';
 import pubSub, { EVENTS } from '../../../pubSub';
 
 import UserModel from '../UserModel';
+import UserType from '../UserType';
+import * as UserLoader from '../UserLoader';
 
 export default mutationWithClientMutationId({
   name: 'UserRegisterWithEmail',
@@ -40,6 +41,7 @@ export default mutationWithClientMutationId({
     await pubSub.publish(EVENTS.USER.ADDED, { UserAdded: { user } });
 
     return {
+      id: user._id,
       token: generateToken(user),
     };
   },
@@ -51,6 +53,10 @@ export default mutationWithClientMutationId({
     error: {
       type: GraphQLString,
       resolve: ({ error }) => error,
+    },
+    me: {
+      type: UserType,
+      resolve: ({ id }, _, context) => UserLoader.load(context, id),
     },
   },
 });
