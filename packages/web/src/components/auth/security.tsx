@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useHistory } from '../../routing/useHistory';
 
-export const TOKEN_KEY = 'money-plan';
+export const TOKEN_KEY = 'money-plan-token';
 
 export const getToken = () => {
   return localStorage.getItem(TOKEN_KEY);

@@ -19,7 +19,7 @@ type Values = {
 };
 
 function Login() {
-  const [userLoginWithEmail, isPending] = useMutation(UserLoginWithEmail);
+  const [userLoginWithEmail, isPending] = useMutation<UserLoginWithEmailMutation>(UserLoginWithEmail);
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -40,7 +40,6 @@ function Login() {
           enqueueSnackbar(UserLoginWithEmail.error);
           return;
         }
-        enqueueSnackbar('Você está logado');
         updateToken(UserLoginWithEmail.token);
         history.push('/');
       },
