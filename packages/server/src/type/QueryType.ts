@@ -1,11 +1,11 @@
-
-
 import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLID } from 'graphql';
 import { connectionArgs, fromGlobalId } from 'graphql-relay';
 
 import UserType, { UserConnection } from '../modules/user/UserType';
+import TransactionType, { TransactionConnection } from '../modules/transaction/TransactionType';
+
 import { nodeField } from '../interface/NodeInterface';
-import { UserLoader } from '../loader';
+import { UserLoader, TransactionLoader } from '../loader';
 
 export default new GraphQLObjectType({
   name: 'Query',
@@ -37,6 +37,16 @@ export default new GraphQLObjectType({
         },
       },
       resolve: (obj, args, context) => UserLoader.loadUsers(context, args),
+    },
+    transactions: {
+      type: TransactionConnection.connectionType,
+      args: {
+        ...connectionArgs,
+        search: {
+          type: GraphQLString,
+        },
+      },
+      resolve: (obj, args, context) => TransactionLoader.loadTransactions(context, args),
     },
   }),
 });
