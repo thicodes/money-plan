@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",
+    "@babel/plugin-proposal-optional-chaining": "^7.8.3",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
@@ -69,7 +70,7 @@
     "relay-runtime": "^9.0.0",
     "relay-test-utils": "^9.0.0",
     "style-loader": "^1.0.0",
-    "typescript": "^3.4.5",
+    "typescript": "^3.8.3",
     "url-loader": "^2.1.0",
     "webpack": "^4.25.1",
     "webpack-nano": "^0.7.1",
