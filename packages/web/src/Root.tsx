@@ -1,7 +1,10 @@
 import React from 'react';
 import { graphql } from 'react-relay';
 import { usePreloadedQuery } from 'react-relay/hooks';
-import AppBar from '@material-ui/core/AppBar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { useAuth } from './components/auth/useAuth';
+import NavBar from './components/navbar/NavBar';
+import { Content } from './components/ui';
 
 type Props = {
   children: React.ReactNode;
@@ -24,11 +27,17 @@ export default function Root({ children, prepared }: Props) {
 
   const isAuthenticated = useAuth(data.me);
 
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <>
-      <AppBar position="static" color="primary">
-        Logout
-      </AppBar>
+      <CssBaseline />
+      <NavBar />
+      <Content pt={'32px'} pb={'32px'}>
+        {children}
+      </Content>
     </>
   );
 }
