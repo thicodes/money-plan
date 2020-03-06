@@ -3,65 +3,12 @@ import { Card, Button, Table } from '../ui';
 import { Flex, Text } from 'rebass';
 import { usePaginationFragment, graphql } from 'react-relay/hooks';
 
-const range = len => {
-  const arr = [];
-  for (let i = 0; i < len; i++) {
-    arr.push(i);
-  }
-  return arr;
-};
-
-const newPerson = () => {
-  const statusChance = Math.random();
-  return {
-    firstName: 'asdasdasd',
-    lastName: 'gsfgsdfsdfsdf',
-    age: Math.floor(Math.random() * 30),
-    visits: Math.floor(Math.random() * 100),
-    progress: Math.floor(Math.random() * 100),
-    status: statusChance > 0.66 ? 'relationship' : statusChance > 0.33 ? 'complicated' : 'single',
-  };
-};
-
-function makeData(...lens) {
-  const makeDataLevel = (depth = 0) => {
-    const len = lens[depth];
-    return range(len).map(d => {
-      return {
-        ...newPerson(),
-        subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined,
-      };
-    });
-  };
-  return makeDataLevel();
-}
-
 function TransactionList(props) {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'First Name',
-        accessor: 'firstName',
-      },
-      {
-        Header: 'Last Name',
-        accessor: 'lastName',
-      },
-      {
-        Header: 'Age',
-        accessor: 'age',
-      },
-      {
-        Header: 'Visits',
-        accessor: 'visits',
-      },
-      {
-        Header: 'Status',
-        accessor: 'status',
-      },
-      {
-        Header: 'Profile Progress',
-        accessor: 'progress',
+        Header: 'Name',
+        accessor: 'name',
       },
     ],
     [],
@@ -102,6 +49,7 @@ function TransactionList(props) {
           edges {
             node {
               id
+              name
             }
           }
         }
@@ -109,11 +57,12 @@ function TransactionList(props) {
     `,
     props.query,
   );
+  const transactions = (data.transactions?.edges ?? []).map(edge => edge.node);
   return (
     <>
       <Table
         columns={columns}
-        data={data}
+        data={transactions}
         setData={() => {}}
         updateMyData={updateMyData}
         skipPageReset={skipPageReset}

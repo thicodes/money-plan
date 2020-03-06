@@ -7,7 +7,7 @@ import { Flex, Text } from 'rebass';
 function Transaction(props) {
   const data = usePreloadedQuery(
     graphql`
-      query TransactionQuery($first: Int!, $after: String) {
+      query TransactionQuery($first: Int, $after: String) {
         ...TransactionList_query @arguments(first: $first, after: $after)
       }
     `,
