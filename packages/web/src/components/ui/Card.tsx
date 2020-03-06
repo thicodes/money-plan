@@ -13,7 +13,7 @@ type CardType = {
 export function Card(props: CardType) {
   const { children, ...rest } = props;
   return (
-    <CardStyled {...rest} elevation={0}>
+    <CardStyled {...rest} elevation={0} style={{ display: 'flex' }}>
       {children}
     </CardStyled>
   );
