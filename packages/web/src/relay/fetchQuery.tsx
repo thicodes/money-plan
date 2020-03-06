@@ -1,6 +1,6 @@
-import  { Variables, UploadableMap } from 'relay-runtime';
+import { Variables, UploadableMap } from 'relay-runtime';
 
-import  { RequestNode } from 'relay-runtime';
+import { RequestNode } from 'relay-runtime';
 
 import { handleData, getRequestBody, getHeaders, isMutation } from './helpers';
 import fetchWithRetries from './fetchWithRetries';
@@ -12,8 +12,11 @@ export const GRAPHQL_URL = 'http://localhost:5000/graphql';
 const fetchQuery = async (request: RequestNode, variables: Variables, uploadables: UploadableMap) => {
   try {
     const body = getRequestBody(request, variables, uploadables);
+    const token = localStorage.getItem('money-plan-token');
+
     const headers = {
       ...getHeaders(uploadables),
+      authorization: token || null,
     };
 
     const response = await fetchWithRetries(GRAPHQL_URL, {
@@ -46,7 +49,6 @@ const fetchQuery = async (request: RequestNode, variables: Variables, uploadable
     const timeoutRegexp = new RegExp(/Still no successful response after/);
     const serverUnavailableRegexp = new RegExp(/Failed to fetch/);
     if (timeoutRegexp.test(err.message) || serverUnavailableRegexp.test(err.message)) {
-
       throw new Error('Serviço indisponível. Tente novamente mais tarde.');
     }
 
