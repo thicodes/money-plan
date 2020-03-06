@@ -41,6 +41,10 @@ const TransactionType = registerType(
         type: GraphQLString,
         resolve: transaction => transaction.name,
       },
+      date: {
+        type: GraphQLString,
+        resolve: transaction => transaction.date,
+      },
       kind: {
         type: TransactionKindUnion,
         resolve: async ({ kind, kindModel }, _, context) => {
@@ -55,6 +59,10 @@ const TransactionType = registerType(
             return null;
           }
         },
+      },
+      isPaid: {
+        type: GraphQLBoolean,
+        resolve: transaction => transaction.isPaid,
       },
       tags: {
         type: new GraphQLList(TagType),

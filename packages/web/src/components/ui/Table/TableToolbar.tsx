@@ -48,13 +48,9 @@ const TableToolbar = props => {
       })}
     >
       {/* <AddUserDialog addUserHandler={addUserHandler} /> */}
-      {numSelected > 0 ? (
+      {numSelected > 0 && (
         <Typography className={classes.title} color="inherit" variant="subtitle1">
           {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography className={classes.title} variant="h6" id="tableTitle">
-          Users
         </Typography>
       )}
 

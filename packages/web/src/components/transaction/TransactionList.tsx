@@ -7,8 +7,16 @@ function TransactionList(props) {
   const columns = React.useMemo(
     () => [
       {
+        Header: 'Date',
+        accessor: 'date',
+      },
+      {
         Header: 'Name',
         accessor: 'name',
+      },
+      {
+        Header: 'Paid/Pending',
+        acessor: 'isPaid'
       },
     ],
     [],
@@ -49,7 +57,9 @@ function TransactionList(props) {
           edges {
             node {
               id
+              date
               name
+              isPaid
             }
           }
         }

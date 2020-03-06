@@ -13,16 +13,20 @@ export default class Transaction {
   id: string;
   _id: Types.ObjectId;
   name: string;
+  date: string;
   kind: string;
   kindModel: string;
+  isPaid: boolean;
   tags: Array<string>;
 
   constructor(data: ITransaction, { transaction }: GraphQLContext) {
     this.id = data._id;
     this._id = data._id;
     this.name = data.name;
+    this.date = data.date;
     this.kind = data.kind;
     this.kindModel = data.kindModel;
+    this.isPaid = data.isPaid;
     this.tags = data.tags;
   }
 }

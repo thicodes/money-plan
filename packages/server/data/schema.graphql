@@ -98,7 +98,9 @@ type Transaction implements Node {
   id: ID!
   _id: String
   name: String
+  date: String
   kind: TransactionKindUnion
+  isPaid: Boolean
   tags: [Tag]
 }
 
@@ -130,6 +132,7 @@ type TransactionConnection {
 
 input TransactionCreateMutationInput {
   name: String!
+  date: String!
   kind: String!
   kindModel: String!
   tags: String

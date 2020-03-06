@@ -7,6 +7,10 @@ const schema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    date: {
+      type: String,
+      required: true,
+    },
     kind: {
       type: String,
       required: true,
@@ -16,6 +20,11 @@ const schema = new mongoose.Schema(
       type: String,
       required: true,
       enum: ['CreditCard', 'Account'],
+    },
+    isPaid: {
+      type: Boolean,
+      required: true,
+      default: true,
     },
     tags: [
       {
@@ -35,6 +44,7 @@ const schema = new mongoose.Schema(
 
 export interface ITransaction extends Document {
   name: string;
+  date: string;
   kind: string;
   kindModel: string;
   tags?: Array<string>;
