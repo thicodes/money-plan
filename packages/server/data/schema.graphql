@@ -1,7 +1,49 @@
+"""Account data"""
+type Account implements Node {
+  """The ID of an object"""
+  id: ID!
+  _id: String
+  name: String
+  bank: String
+  kind: Boolean
+}
+
+input AccountCreateMutationInput {
+  name: String!
+  bank: String!
+  kind: String!
+  clientMutationId: String
+}
+
+type AccountCreateMutationPayload {
+  accountEdge: AccountEdge
+  error: String
+  clientMutationId: String
+}
+
+"""An edge in a connection."""
+type AccountEdge {
+  """The item at the end of the edge"""
+  node: Account!
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+"""Credit Card data"""
+type CreditCard implements Node {
+  """The ID of an object"""
+  id: ID!
+  _id: String
+  name: String
+}
+
 type Mutation {
+  AccountCreate(input: AccountCreateMutationInput!): AccountCreateMutationPayload
   UserChangePassword(input: UserChangePasswordInput!): UserChangePasswordPayload
   UserLoginWithEmail(input: UserLoginWithEmailInput!): UserLoginWithEmailPayload
   UserRegisterWithEmail(input: UserRegisterWithEmailInput!): UserRegisterWithEmailPayload
+  TransactionCreate(input: TransactionCreateMutationInput!): TransactionCreateMutationPayload
 }
 
 """An object with an ID"""
@@ -35,11 +77,81 @@ type Query {
   me: User
   user(id: ID!): User
   users(after: String, first: Int, before: String, last: Int, search: String): UserConnection
+  transactions(after: String, first: Int, before: String, last: Int, search: String): TransactionConnection
 }
 
 type Subscription {
   UserAdded: UserAddedPayload
 }
+
+"""Tag data"""
+type Tag implements Node {
+  """The ID of an object"""
+  id: ID!
+  _id: String
+  name: String
+}
+
+"""Transaction data"""
+type Transaction implements Node {
+  """The ID of an object"""
+  id: ID!
+  _id: String
+  name: String
+  kind: TransactionKindUnion
+  tags: [Tag]
+}
+
+"""A connection to a list of items."""
+type TransactionConnection {
+  """Number of items in this connection"""
+  count: Int!
+
+  """
+  A count of the total number of objects in this connection, ignoring pagination.
+    This allows a client to fetch the first five objects by passing "5" as the
+    argument to "first", then fetch the total count so it could display "5 of 83",
+    for example.
+  """
+  totalCount: Int!
+
+  """Offset from start"""
+  startCursorOffset: Int!
+
+  """Offset till end"""
+  endCursorOffset: Int!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfoExtended!
+
+  """A list of edges."""
+  edges: [TransactionEdge]!
+}
+
+input TransactionCreateMutationInput {
+  name: String!
+  kind: String!
+  kindModel: String!
+  tags: String
+  clientMutationId: String
+}
+
+type TransactionCreateMutationPayload {
+  transactionEdge: TransactionEdge
+  error: String
+  clientMutationId: String
+}
+
+"""An edge in a connection."""
+type TransactionEdge {
+  """The item at the end of the edge"""
+  node: Transaction!
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+union TransactionKindUnion = Account | CreditCard
 
 """User data"""
 type User implements Node {
@@ -126,5 +238,6 @@ input UserRegisterWithEmailInput {
 type UserRegisterWithEmailPayload {
   token: String
   error: String
+  me: User
   clientMutationId: String
 }
