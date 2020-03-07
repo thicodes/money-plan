@@ -19,12 +19,15 @@
   <br>
 </h1>
 
--   [React](https://reactjs.org/)
--   [Relay](https://relay.dev/)
+-   [React Experimental + Suspense](https://reactjs.org/)
+-   [Relay Experimental + Hooks](https://relay.dev/docs/en/experimental/a-guided-tour-of-relay)
 -   [Styled Components](https://www.styled-components.com/)
+-   [Styled System](https://styled-system.com/)
+-   [Rebass](https://rebassjs.org/)
 -   [Formik + Yup](https://jaredpalmer.com/formik/)
 -   [MongoDB](https://www.mongodb.com/)
 -   [GraphQL](https://github.com/facebook/graphql)
+-   [Typescript](https://www.typescriptlang.org/)
 
 ## **Getting Started**
 
