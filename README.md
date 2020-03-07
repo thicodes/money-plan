@@ -1,5 +1,3 @@
-# Money Plan
-
 <h1 align="center">
   <img src="https://user-images.githubusercontent.com/6524612/76134865-9a1bc880-6000-11ea-99a1-188f83e60c37.png" alt="Money Plan" height="130">
   <br>
