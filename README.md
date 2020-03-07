@@ -8,14 +8,13 @@
 <p align="center">React and Relay using concurrent mode to preload queries</p>
 
 <p align="center">
-  <a href="#blush-why">Why</a> •
-  <a href="#dizzy-roadmap">Roadmap</a> •
   <a href="#stack">Stack</a> •
-  <a href="#handshake-contributing">Contributing</a> •  
+  <a href="#getting-started">Getting Started</a> •  
+  <a href="#contributing">Contributing</a> •  
   <a href="#credits">Credits</a>
 </p>
 
-## :zap: **Stack**
+## **Stack**
 
 <h1 align="center">
   <img src="https://user-images.githubusercontent.com/6524612/76133988-f3342e00-5ff9-11ea-99e9-a0e0b2841d8e.png" alt="Stack" height="100">
@@ -29,7 +28,7 @@
 -   [MongoDB](https://www.mongodb.com/)
 -   [GraphQL](https://github.com/facebook/graphql)
 
-## Getting Started
+## **Getting Started**
 
 ### Installing
 ```
