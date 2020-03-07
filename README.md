@@ -6,11 +6,16 @@
 <p align="center">React + Relay project using concurrent mode to preload queries</p>
 
 <p align="center">
+  <a href="#stack">Why ?</a> •
   <a href="#stack">Stack</a> •
   <a href="#getting-started">Getting Started</a> •  
   <a href="#contributing">Contributing</a> •  
   <a href="#credits">Credits</a>
 </p>
+
+## **Why ?**
+
+Through my need to better organize finances I tried to find some platform that could help me. However, I found interesting features in some, limitations in others. Hence the Money Plan was born. Why not create your own, open source and use modern technologies?
 
 ## **Stack**
 
