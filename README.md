@@ -26,7 +26,12 @@
 -   [Rebass](https://rebassjs.org/)
 -   [Formik + Yup](https://jaredpalmer.com/formik/)
 -   [MongoDB](https://www.mongodb.com/)
+-   [ ] RefPath
+
 -   [GraphQL](https://github.com/facebook/graphql)
+-   [ ] Dataloader
+-   [ ] Union
+
 -   [Typescript](https://www.typescriptlang.org/)
 
 ## **Getting Started**
