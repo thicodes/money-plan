@@ -1,9 +1,33 @@
-# Entria FullStack Playground
-![supported version](https://badgen.net/badge/node/lts/green)
+# Money Plan
 
-Let's us know how can we help
+<h1 align="center">
+  <img src="https://user-images.githubusercontent.com/6524612/76134865-9a1bc880-6000-11ea-99a1-188f83e60c37.png" alt="Money Plan" height="130">
+  <br>
+</h1>
 
-Read more about Playgrounds: https://medium.com/@sibelius/why-your-company-should-have-an-open-source-playground-4bb93068ce95
+<p align="center">React and Relay using concurrent mode to preload queries</p>
+
+<p align="center">
+  <a href="#blush-why">Why</a> •
+  <a href="#dizzy-roadmap">Roadmap</a> •
+  <a href="#stack">Stack</a> •
+  <a href="#handshake-contributing">Contributing</a> •  
+  <a href="#credits">Credits</a>
+</p>
+
+## :zap: **Stack**
+
+<h1 align="center">
+  <img src="https://user-images.githubusercontent.com/6524612/76133988-f3342e00-5ff9-11ea-99e9-a0e0b2841d8e.png" alt="Stack" height="100">
+  <br>
+</h1>
+
+-   [React](https://reactjs.org/)
+-   [Relay](https://relay.dev/)
+-   [Styled Components](https://www.styled-components.com/)
+-   [Formik + Yup](https://jaredpalmer.com/formik/)
+-   [MongoDB](https://www.mongodb.com/)
+-   [GraphQL](https://github.com/facebook/graphql)
 
 ## Getting Started
 
@@ -28,15 +52,18 @@ Start Package
 yarn start:web
 ```
 
-### Run App Package
-We recommend that you read https://facebook.github.io/react-native/docs/getting-started before starting
+## **Contributing**
 
-Compile Relay
-```
-yarn relay:app
-```
+You can also contribute money to help Money Plan.
 
-Start Package
-```
-yarn start:app
-```
+<p align="center">
+  <a href="https://www.patreon.com/thicodes" target="_blank">
+    <img src="https://cdn-std.dprcdn.net/files/acc_649651/plrSCT" height="80" alt="Patreon">
+  </a>
+</p>
+
+## **Credits**
+
+-   [Hangout with Sibelius Seraphini on Relay and Concurrent Mode](https://www.youtube.com/watch?v=dAazdich_qg&t=2037s)
+-   [Entria Full Stack](https://github.com/entria/entria-fullstack)
+-   [Relay Example Issue Tracker](https://github.com/relayjs/relay-examples/tree/master/issue-tracker)
