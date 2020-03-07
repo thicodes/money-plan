@@ -3,7 +3,7 @@
   <br>
 </h1>
 
-<p align="center">React and Relay using concurrent mode to preload queries</p>
+<p align="center">React + Relay project using concurrent mode to preload queries</p>
 
 <p align="center">
   <a href="#stack">Stack</a> •
