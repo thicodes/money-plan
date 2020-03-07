@@ -51,6 +51,7 @@ yarn start:web
 
 ## **Contributing**
 
+All kinds of contributions are very welcome and appreciated !
 You can also contribute money to help Money Plan.
 
 <p align="center">
