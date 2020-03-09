@@ -1,43 +1,42 @@
-
 import { ConnectionHandler } from 'relay-runtime';
 import { isObject, isArray } from 'lodash/fp';
 
-import  { Store, RecordProxy, ConcreteNode } from 'relay-runtime';
+import { Store, RecordProxy, RecordSourceSelectorProxy } from 'relay-runtime';
 
 type ListRecordRemoveUpdaterOptions = {
-  parentId: string,
-  itemId: string,
-  parentFieldName: string,
-  store: Store,
+  parentId: string;
+  itemId: string;
+  parentFieldName: string;
+  store: Store;
 };
 
 type ListRecordAddUpdaterOptions = {
-  parentId: string,
-  item: Object,
-  type: string,
-  parentFieldName: string,
-  store: Store,
+  parentId: string;
+  item: Object;
+  type: string;
+  parentFieldName: string;
+  store: Store;
 };
 
 type OptimisticConnectionUpdaterOptions = {
-  parentId: string,
-  store: Store,
-  connectionName: string,
-  item: Object,
-  customNode: ?ConcreteNode,
-  itemType: string,
+  parentId: string;
+  store: Store;
+  connectionName: string;
+  item: Object;
+  customNode: any | null;
+  itemType: string;
 };
 
 type ConnectionDeleteEdgeUpdaterOptions = {
-  parentId: string,
-  connectionName: string,
-  nodeId: string,
-  store: Store,
+  parentId: string;
+  connectionName: string;
+  nodeId: string;
+  store: Store;
 };
 
 type CopyObjScalarsToProxyOptions = {
-  object: Object,
-  proxy: RecordProxy,
+  object: Object;
+  proxy: RecordProxy;
 };
 
 export function listRecordRemoveUpdater({ parentId, itemId, parentFieldName, store }: ListRecordRemoveUpdaterOptions) {
@@ -60,24 +59,51 @@ export function listRecordAddUpdater({ parentId, item, type, parentFieldName, st
   parentProxy.setLinkedRecords([...items, node], parentFieldName);
 }
 
-export function connectionUpdater(
-  store: Store,
-  parentId: string,
-  connectionName: string,
-  edge: RecordProxy,
-  before?: boolean = false,
-) {
+interface ConnectionUpdaterParams {
+  store: RecordSourceSelectorProxy;
+  parentId: string;
+  connectionName: string;
+  edge: any;
+  before?: boolean;
+  filters?: object;
+  cursor?: string;
+}
+export function connectionUpdater({
+  store,
+  parentId,
+  connectionName,
+  edge,
+  before,
+  filters,
+  cursor,
+}: ConnectionUpdaterParams) {
   if (edge) {
-    const parentProxy = store.get(parentId);
-    const conn = ConnectionHandler.getConnection(parentProxy, connectionName);
-    if (!conn) {
+    if (!parentId) {
+      // eslint-disable-next-line no-console
+      console.log('maybe you forgot to pass a parentId: ');
       return;
     }
 
+    const parentProxy = store.get(parentId);
+
+    const connection = ConnectionHandler.getConnection(parentProxy, connectionName, filters);
+
+    if (!connection) {
+      // eslint-disable-next-line no-console
+      console.log('maybe this connection is not in relay store yet:', connectionName);
+      return;
+    }
+
+    const newEndCursorOffset = connection.getValue('endCursorOffset');
+    connection.setValue(newEndCursorOffset + 1, 'endCursorOffset');
+
+    const newCount = connection.getValue('count');
+    connection.setValue(newCount + 1, 'count');
+
     if (before) {
-      ConnectionHandler.insertEdgeBefore(conn, edge);
+      ConnectionHandler.insertEdgeBefore(connection, edge, cursor);
     } else {
-      ConnectionHandler.insertEdgeAfter(conn, edge);
+      ConnectionHandler.insertEdgeAfter(connection, edge, cursor);
     }
   }
 }
