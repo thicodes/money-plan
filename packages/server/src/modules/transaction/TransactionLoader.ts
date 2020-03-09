@@ -14,6 +14,7 @@ export default class Transaction {
   _id: Types.ObjectId;
   name: string;
   date: string;
+  isExpense: boolean;
   kind: string;
   kindModel: string;
   isPaid: boolean;
@@ -24,6 +25,7 @@ export default class Transaction {
     this._id = data._id;
     this.name = data.name;
     this.date = data.date;
+    this.isExpense = data.isExpense;
     this.kind = data.kind;
     this.kindModel = data.kindModel;
     this.isPaid = data.isPaid;

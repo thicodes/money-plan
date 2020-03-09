@@ -821,6 +821,18 @@
               "deprecationReason": null
             },
             {
+              "name": "isExpense",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "kind",
               "description": null,
               "args": [],
@@ -1213,7 +1225,7 @@
                     "name": null,
                     "ofType": {
                       "kind": "INPUT_OBJECT",
-                      "name": "TransactionCreateMutationInput",
+                      "name": "TransactionCreateInput",
                       "ofType": null
                     }
                   },
@@ -1222,7 +1234,7 @@
               ],
               "type": {
                 "kind": "OBJECT",
-                "name": "TransactionCreateMutationPayload",
+                "name": "TransactionCreatePayload",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -1703,7 +1715,7 @@
         },
         {
           "kind": "INPUT_OBJECT",
-          "name": "TransactionCreateMutationInput",
+          "name": "TransactionCreateInput",
           "description": null,
           "fields": null,
           "inputFields": [
@@ -1736,6 +1748,16 @@
               "defaultValue": null
             },
             {
+              "name": "isExpense",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "kind",
               "description": null,
               "type": {
@@ -1760,6 +1782,16 @@
                   "name": "String",
                   "ofType": null
                 }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "isPaid",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
               },
               "defaultValue": null
             },
@@ -1790,7 +1822,7 @@
         },
         {
           "kind": "OBJECT",
-          "name": "TransactionCreateMutationPayload",
+          "name": "TransactionCreatePayload",
           "description": null,
           "fields": [
             {

@@ -1,4 +1,4 @@
-import { GraphQLString, GraphQLNonNull } from 'graphql';
+import { GraphQLString, GraphQLNonNull, GraphQLBoolean } from 'graphql';
 import { mutationWithClientMutationId, toGlobalId } from 'graphql-relay';
 
 import { generateToken } from '../../../auth';
@@ -9,7 +9,7 @@ import { TransactionConnection } from '../TransactionType';
 import * as TransactionLoader from '../TransactionLoader';
 
 export default mutationWithClientMutationId({
-  name: 'TransactionCreateMutation',
+  name: 'TransactionCreate',
   inputFields: {
     name: {
       type: new GraphQLNonNull(GraphQLString),
@@ -17,22 +17,30 @@ export default mutationWithClientMutationId({
     date: {
       type: new GraphQLNonNull(GraphQLString),
     },
+    isExpense: {
+      type: GraphQLBoolean,
+    },
     kind: {
       type: new GraphQLNonNull(GraphQLString),
     },
     kindModel: {
       type: new GraphQLNonNull(GraphQLString),
     },
+    isPaid: {
+      type: GraphQLBoolean,
+    },
     tags: {
       type: GraphQLString,
     },
   },
-  mutateAndGetPayload: async ({ name, date, kind, kindModel, tags }) => {
+  mutateAndGetPayload: async ({ name, date, isExpense, kind, kindModel, isPaid, tags }) => {
     const transaction = new TransactionModel({
       name,
       date,
+      isExpense,
       kind,
       kindModel,
+      isPaid,
       tags,
     });
 

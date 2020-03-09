@@ -43,7 +43,7 @@ type Mutation {
   UserChangePassword(input: UserChangePasswordInput!): UserChangePasswordPayload
   UserLoginWithEmail(input: UserLoginWithEmailInput!): UserLoginWithEmailPayload
   UserRegisterWithEmail(input: UserRegisterWithEmailInput!): UserRegisterWithEmailPayload
-  TransactionCreate(input: TransactionCreateMutationInput!): TransactionCreateMutationPayload
+  TransactionCreate(input: TransactionCreateInput!): TransactionCreatePayload
 }
 
 """An object with an ID"""
@@ -99,6 +99,7 @@ type Transaction implements Node {
   _id: String
   name: String
   date: String
+  isExpense: Boolean
   kind: TransactionKindUnion
   isPaid: Boolean
   tags: [Tag]
@@ -130,16 +131,18 @@ type TransactionConnection {
   edges: [TransactionEdge]!
 }
 
-input TransactionCreateMutationInput {
+input TransactionCreateInput {
   name: String!
   date: String!
+  isExpense: Boolean
   kind: String!
   kindModel: String!
+  isPaid: Boolean
   tags: String
   clientMutationId: String
 }
 
-type TransactionCreateMutationPayload {
+type TransactionCreatePayload {
   transactionEdge: TransactionEdge
   error: String
   clientMutationId: String

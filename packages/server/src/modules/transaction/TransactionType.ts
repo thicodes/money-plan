@@ -45,6 +45,10 @@ const TransactionType = registerType(
         type: GraphQLString,
         resolve: transaction => transaction.date,
       },
+      isExpense: {
+        type: GraphQLBoolean,
+        resolve: transaction => transaction.isExpense,
+      },
       kind: {
         type: TransactionKindUnion,
         resolve: async ({ kind, kindModel }, _, context) => {
@@ -55,6 +59,7 @@ const TransactionType = registerType(
           } else if (kindModel === 'CreditCard') {
             const creditCard = await CreditCardLoader.load(context, kind);
             creditCard.__typename = kindModel;
+            return creditCard;
           } else {
             return null;
           }
