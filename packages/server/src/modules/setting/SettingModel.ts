@@ -6,6 +6,11 @@ const schema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    isFinishedSetup: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
   {
     timestamps: {
@@ -18,6 +23,7 @@ const schema = new mongoose.Schema(
 
 export interface ISetting extends Document {
   currency: string;
+  isFinishedSetup: boolean;
 }
 
 const SettingModel: Model<ISetting> = mongoose.model('Setting', schema);

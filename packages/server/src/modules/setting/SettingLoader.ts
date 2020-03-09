@@ -13,11 +13,13 @@ export default class Setting {
   id: string;
   _id: Types.ObjectId;
   currency: string;
+  isFinishedSetup: boolean;
 
   constructor(data: ISetting, { setting }: GraphQLContext) {
     this.id = data._id;
     this._id = data._id;
     this.currency = data.currency;
+    this.isFinishedSetup = data.isFinishedSetup;
   }
 }
 

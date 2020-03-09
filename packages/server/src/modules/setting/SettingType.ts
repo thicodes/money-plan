@@ -14,9 +14,13 @@ const SettingType = registerType(
         type: GraphQLString,
         resolve: setting => setting._id,
       },
-      name: {
+      currency: {
         type: GraphQLString,
-        resolve: setting => setting.name,
+        resolve: setting => setting.currency,
+      },
+      isFinishedSetup: {
+        type: GraphQLBoolean,
+        resolve: setting => setting.isFinishedSetup,
       },
     }),
     interfaces: () => [nodeInterface],
