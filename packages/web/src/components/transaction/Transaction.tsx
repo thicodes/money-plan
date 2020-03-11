@@ -9,8 +9,9 @@ function Transaction(props) {
   const [isOpenTransactionCreate, setIsOpenTransactionCreate] = React.useState(false);
   const data = usePreloadedQuery(
     graphql`
-      query TransactionQuery($first: Int, $after: String) {
-        ...TransactionList_query @arguments(first: $first, after: $after)
+      query TransactionQuery {
+        ...TransactionList_query
+        ...TransactionCreate_query
       }
     `,
     props.prepared.transactionQuery,
@@ -22,7 +23,9 @@ function Transaction(props) {
         <Button variant="contained" color="primary" onClick={() => setIsOpenTransactionCreate(true)}>
           Add
         </Button>
-        {isOpenTransactionCreate && <TransactionCreate onCancel={() => setIsOpenTransactionCreate(false)} />}
+        {isOpenTransactionCreate && (
+          <TransactionCreate query={data} onCancel={() => setIsOpenTransactionCreate(false)} />
+        )}
       </Flex>
       <Card p="10px">
         <TransactionList query={data} />

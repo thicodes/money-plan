@@ -14,6 +14,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useMutation } from 'react-relay/lib/relay-experimental';
+import { graphql, useFragment } from 'react-relay/hooks';
 import { TransactionCreateMutation, updater } from './TransactionCreateMutation';
 import { useFormik, FormikProvider } from 'formik';
 import * as yup from 'yup';
@@ -25,8 +26,44 @@ type Values = {
   date: string;
 };
 
-export default function TransactionCreate({ onCancel }) {
+const transactionKind = {};
+
+export default function TransactionCreate({ query, onCancel }) {
   const [transactionCreate, isPending] = useMutation(TransactionCreateMutation);
+
+  const { transactionsByKind } = useFragment(
+    graphql`
+      fragment TransactionCreate_query on Query {
+        transactionsByKind {
+          edges {
+            node {
+              id
+              kindModel
+              kind {
+                ... on AccountConnection {
+                  edges {
+                    node {
+                      id
+                      name
+                    }
+                  }
+                }
+                ... on CreditCardConnection {
+                  edges {
+                    node {
+                      id
+                      name
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    `,
+    query,
+  );
 
   const onSubmit = (values: Values, formikAction) => {
     const config = {
@@ -66,6 +103,12 @@ export default function TransactionCreate({ onCancel }) {
 
   const { values, setFieldValue, handleSubmit, isValid } = formik;
 
+  const transactionsKindMapEdges = (transactionsByKind?.edges ?? []).map(edge => edge.node);
+
+  console.log('data', data);
+
+  // console.log(transactionsByKind);
+
   return (
     <div>
       <FormikProvider value={formik}>
@@ -91,19 +134,20 @@ export default function TransactionCreate({ onCancel }) {
               onChange={e => setFieldValue('name', e.target.value)}
               fullWidth
             />
-            <TextField label="date" value={values.date} onChange={e => setFieldValue('date', e.target.value)} />
             <TextField
-              label="kind"
-              value={values.kind}
-              onChange={e => setFieldValue('kind', e.target.value)}
-              fullWidth
+              label="date"
+              type="date"
+              value={values.date}
+              onChange={e => setFieldValue('date', e.target.value)}
             />
-            <TextField
-              label="kindModel"
-              value={values.kindModel}
-              onChange={e => setFieldValue('kindModel', e.target.value)}
-              fullWidth
-            />
+            {/* <FormControl>
+              <InputLabel id="demo-simple-select-label">Age</InputLabel>
+              <Select labelId="demo-simple-select-label" id="demo-simple-select" onChange={() => {}}>
+                {transactionsKindMapEdges.map(t => (
+                  <MenuItem value={t.kindModel}>{t.kindModel}</MenuItem>
+                ))}
+              </Select>
+            </FormControl> */}
           </DialogContent>
           <DialogActions>
             <Button onClick={onCancel} color="primary">
