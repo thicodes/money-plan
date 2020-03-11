@@ -8,6 +8,32 @@ type Account implements Node {
   kind: Boolean
 }
 
+"""A connection to a list of items."""
+type AccountConnection {
+  """Number of items in this connection"""
+  count: Int!
+
+  """
+  A count of the total number of objects in this connection, ignoring pagination.
+    This allows a client to fetch the first five objects by passing "5" as the
+    argument to "first", then fetch the total count so it could display "5 of 83",
+    for example.
+  """
+  totalCount: Int!
+
+  """Offset from start"""
+  startCursorOffset: Int!
+
+  """Offset till end"""
+  endCursorOffset: Int!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfoExtended!
+
+  """A list of edges."""
+  edges: [AccountEdge]!
+}
+
 input AccountCreateMutationInput {
   name: String!
   bank: String!
@@ -36,6 +62,41 @@ type CreditCard implements Node {
   id: ID!
   _id: String
   name: String
+}
+
+"""A connection to a list of items."""
+type CreditCardConnection {
+  """Number of items in this connection"""
+  count: Int!
+
+  """
+  A count of the total number of objects in this connection, ignoring pagination.
+    This allows a client to fetch the first five objects by passing "5" as the
+    argument to "first", then fetch the total count so it could display "5 of 83",
+    for example.
+  """
+  totalCount: Int!
+
+  """Offset from start"""
+  startCursorOffset: Int!
+
+  """Offset till end"""
+  endCursorOffset: Int!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfoExtended!
+
+  """A list of edges."""
+  edges: [CreditCardEdge]!
+}
+
+"""An edge in a connection."""
+type CreditCardEdge {
+  """The item at the end of the edge"""
+  node: CreditCard!
+
+  """A cursor for use in pagination"""
+  cursor: String!
 }
 
 type Mutation {
@@ -78,6 +139,7 @@ type Query {
   user(id: ID!): User
   users(after: String, first: Int, before: String, last: Int, search: String): UserConnection
   transactions(after: String, first: Int, before: String, last: Int, search: String): TransactionConnection
+  transactionsByKind: TransactionByKindConnection
 }
 
 type Subscription {
@@ -103,6 +165,50 @@ type Transaction implements Node {
   kind: TransactionKindUnion
   isPaid: Boolean
   tags: [Tag]
+}
+
+"""Transaction by kind data"""
+type TransactionByKind implements Node {
+  """The ID of an object"""
+  id: ID!
+  _id: String
+  kindModel: String
+  kind: TransactionKindInterface
+}
+
+"""A connection to a list of items."""
+type TransactionByKindConnection {
+  """Number of items in this connection"""
+  count: Int!
+
+  """
+  A count of the total number of objects in this connection, ignoring pagination.
+    This allows a client to fetch the first five objects by passing "5" as the
+    argument to "first", then fetch the total count so it could display "5 of 83",
+    for example.
+  """
+  totalCount: Int!
+
+  """Offset from start"""
+  startCursorOffset: Int!
+
+  """Offset till end"""
+  endCursorOffset: Int!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfoExtended!
+
+  """A list of edges."""
+  edges: [TransactionByKindEdge]!
+}
+
+"""An edge in a connection."""
+type TransactionByKindEdge {
+  """The item at the end of the edge"""
+  node: TransactionByKind!
+
+  """A cursor for use in pagination"""
+  cursor: String!
 }
 
 """A connection to a list of items."""
@@ -156,6 +262,8 @@ type TransactionEdge {
   """A cursor for use in pagination"""
   cursor: String!
 }
+
+union TransactionKindInterface = AccountConnection | CreditCardConnection
 
 union TransactionKindUnion = Account | CreditCard
 
