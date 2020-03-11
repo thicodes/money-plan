@@ -23,10 +23,10 @@ import * as yup from 'yup';
 import { Button } from '../ui';
 
 import { TransactionCreateMutation } from './__generated__/TransactionCreateMutation.graphql'
-import { TransactionCreate_query$key } from './__generated__/TransactionCreate_query.graphql'
+import { TransactionComposerDialog_query$key } from './__generated__/TransactionComposerDialog_query.graphql'
 
 type Props = {
-  query: any;
+  query: TransactionComposerDialog_query$key;
   onCancel: () => void
 }
 
@@ -36,12 +36,12 @@ type Values = {
   date: string;
 };
 
-export default function TransactionCreate({ query, onCancel }: Props) {
+export default function TransactionComposerDialog({ query, onCancel }: Props) {
   const [transactionCreate, isPending] = useMutation<TransactionCreateMutation>(TransactionCreate);
 
   const { transactionsByKind } = useFragment(
     graphql`
-      fragment TransactionCreate_query on Query {
+      fragment TransactionComposerDialog_query on Query {
         transactionsByKind {
           edges {
             node {
