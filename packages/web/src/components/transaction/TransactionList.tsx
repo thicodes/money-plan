@@ -3,7 +3,14 @@ import { Card, Button, Table } from '../ui';
 import { Flex, Text } from 'rebass';
 import { usePaginationFragment, graphql } from 'react-relay/hooks';
 
-function TransactionList(props) {
+import { TransactionList_query$key } from './__generated__/TransactionList_query.graphql'
+import { TransactionListPaginationQuery  } from './__generated__/TransactionListPaginationQuery.graphql';
+
+type Props = {
+  query: TransactionList_query$key;
+};
+
+function TransactionList(props: Props) {
   const columns = React.useMemo(
     () => [
       {
@@ -24,7 +31,7 @@ function TransactionList(props) {
   // const [data, setData] = React.useState(React.useMemo(() => makeData(20), []));
   // console.log(data);
   const [skipPageReset, setSkipPageReset] = React.useState(false);
-  const { data, loadNext, isLoadingNext } = usePaginationFragment(
+  const { data, loadNext, isLoadingNext } = usePaginationFragment<TransactionListPaginationQuery, _>(
     graphql`
       fragment TransactionList_query on Query
         @argumentDefinitions(first: { type: "Int", defaultValue: 30 }, after:{ type: "String" })

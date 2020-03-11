@@ -11,14 +11,24 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import { useMutation } from 'react-relay/lib/relay-experimental';
 import { graphql, useFragment } from 'react-relay/hooks';
-import { TransactionCreateMutation, updater } from './TransactionCreateMutation';
+import { TransactionCreate, updater } from './TransactionCreateMutation';
 import { useFormik, FormikProvider } from 'formik';
 import * as yup from 'yup';
 import { Button } from '../ui';
+
+import { TransactionCreateMutation } from './__generated__/TransactionCreateMutation.graphql'
+import { TransactionCreate_query$key } from './__generated__/TransactionCreate_query.graphql'
+
+type Props = {
+  query: any;
+  onCancel: () => void
+}
 
 type Values = {
   isExpense: boolean;
@@ -26,10 +36,8 @@ type Values = {
   date: string;
 };
 
-const transactionKind = {};
-
-export default function TransactionCreate({ query, onCancel }) {
-  const [transactionCreate, isPending] = useMutation(TransactionCreateMutation);
+export default function TransactionCreate({ query, onCancel }: Props) {
+  const [transactionCreate, isPending] = useMutation<TransactionCreateMutation>(TransactionCreate);
 
   const { transactionsByKind } = useFragment(
     graphql`
@@ -103,12 +111,10 @@ export default function TransactionCreate({ query, onCancel }) {
 
   const { values, setFieldValue, handleSubmit, isValid } = formik;
 
-  const transactionsKindMapEdges = (transactionsByKind?.edges ?? []).map(edge => edge.node);
-
-  console.log('data', data);
-
-  // console.log(transactionsByKind);
-
+  const transactionsKindMapEdges = (transactionsByKind?.edges ?? []).map(edge => ({
+    ...edge.node,
+    kind: edge.node.kind.edges.map(kindEdges => kindEdges.node),
+  }));
   return (
     <div>
       <FormikProvider value={formik}>
@@ -140,14 +146,22 @@ export default function TransactionCreate({ query, onCancel }) {
               value={values.date}
               onChange={e => setFieldValue('date', e.target.value)}
             />
-            {/* <FormControl>
-              <InputLabel id="demo-simple-select-label">Age</InputLabel>
-              <Select labelId="demo-simple-select-label" id="demo-simple-select" onChange={() => {}}>
-                {transactionsKindMapEdges.map(t => (
-                  <MenuItem value={t.kindModel}>{t.kindModel}</MenuItem>
+            <FormControl>
+              <InputLabel htmlFor="grouped-select">Grouping</InputLabel>
+              <Select defaultValue="" onChange={e => setFieldValue('kind', e.target.value)} input={<Input id="grouped-select" />}>
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                {transactionsKindMapEdges.map(({ kindModel, kind }, idx) => (
+                  <span key={idx}>
+                    <ListSubheader>{kindModel}</ListSubheader>
+                    {kind.map(({id, name}) => (
+                      <MenuItem value={id} key={id}>{name}</MenuItem>
+                    ))}
+                  </span>
                 ))}
               </Select>
-            </FormControl> */}
+            </FormControl>
           </DialogContent>
           <DialogActions>
             <Button onClick={onCancel} color="primary">

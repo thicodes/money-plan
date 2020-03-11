@@ -3,7 +3,7 @@ import { SelectorStoreUpdater, ROOT_ID } from 'relay-runtime';
 
 import { connectionUpdater } from '../../relay/mutationUtils';
 
-export const TransactionCreateMutation = graphql`
+export const TransactionCreate = graphql`
   mutation TransactionCreateMutation($input: TransactionCreateInput!) {
     TransactionCreate(input: $input) {
       error

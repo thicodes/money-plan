@@ -5,16 +5,24 @@ import TransactionList from './TransactionList';
 import TransactionCreate from './TransactionCreate';
 import { Flex, Text } from 'rebass';
 
-function Transaction(props) {
+import { TransactionQuery } from './__generated__/TransactionQuery.graphql';
+
+type Props = {
+  prepared: {
+    transactionQuery: any;
+  };
+};
+
+function Transaction({ prepared }: Props) {
   const [isOpenTransactionCreate, setIsOpenTransactionCreate] = React.useState(false);
-  const data = usePreloadedQuery(
+  const data = usePreloadedQuery<TransactionQuery>(
     graphql`
       query TransactionQuery {
         ...TransactionList_query
         ...TransactionCreate_query
       }
     `,
-    props.prepared.transactionQuery,
+    prepared.transactionQuery,
   );
   return (
     <>
