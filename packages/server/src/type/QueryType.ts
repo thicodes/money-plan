@@ -2,7 +2,11 @@ import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLID } from 'gra
 import { connectionArgs, fromGlobalId } from 'graphql-relay';
 
 import UserType, { UserConnection } from '../modules/user/UserType';
-import TransactionType, { TransactionConnection } from '../modules/transaction/TransactionType';
+import TransactionType, {
+  TransactionByKindType,
+  TransactionByKindConnection,
+  TransactionConnection,
+} from '../modules/transaction/TransactionType';
 
 import { nodeField } from '../interface/NodeInterface';
 import { UserLoader, TransactionLoader } from '../loader';
@@ -47,6 +51,14 @@ export default new GraphQLObjectType({
         },
       },
       resolve: (obj, args, context) => TransactionLoader.loadTransactions(context, args),
+    },
+    transactionsByKind: {
+      type: TransactionByKindConnection.connectionType,
+      resolve: (obj, args, context) => {
+        return {
+          edges: ['Account', 'CreditCard'].map((v, i) => ({ node: { id: i + 1, kindModel: v } })),
+        };
+      },
     },
   }),
 });

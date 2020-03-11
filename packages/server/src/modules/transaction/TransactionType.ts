@@ -12,8 +12,8 @@ import { connectionDefinitions } from '../../core/connection/CustomConnectionTyp
 import { registerType, nodeInterface } from '../../interface/NodeInterface';
 
 import TagType from '../tag/TagType';
-import AccountType from '../account/AccountType';
-import CreditCardType from '../credit-card/CreditCardType';
+import AccountType, { AccountConnection } from '../account/AccountType';
+import CreditCardType, { CreditCardConnection } from '../credit-card/CreditCardType';
 
 import { CreditCardLoader, AccountLoader } from '../../loader';
 
@@ -83,4 +83,54 @@ export default TransactionType;
 export const TransactionConnection = connectionDefinitions({
   name: 'Transaction',
   nodeType: GraphQLNonNull(TransactionType),
+});
+
+const TransactionKindInterface = new GraphQLUnionType({
+  name: 'TransactionKindInterface',
+  types: [AccountConnection.connectionType, CreditCardConnection.connectionType],
+  resolveType: object => {
+    if (object.__typename === 'Account') return AccountConnection.connectionType;
+    if (object.__typename === 'CreditCard') return CreditCardConnection.connectionType;
+    return null;
+  },
+});
+
+export const TransactionByKindType = registerType(
+  new GraphQLObjectType({
+    name: 'TransactionByKind',
+    description: 'Transaction by kind data',
+    fields: () => ({
+      id: globalIdField('TransactionByKind'),
+      _id: {
+        type: GraphQLString,
+        resolve: transaction => transaction._id,
+      },
+      kindModel: {
+        type: GraphQLString,
+        resolve: transaction => transaction.kindModel,
+      },
+      kind: {
+        type: TransactionKindInterface,
+        resolve: async ({ kindModel }, args, context) => {
+          if (kindModel === 'Account') {
+            const account = await AccountLoader.loadAccounts(context, args);
+            account.__typename = kindModel;
+            return account;
+          } else if (kindModel === 'CreditCard') {
+            const creditCard = await CreditCardLoader.loadCreditCards(context, args);
+            creditCard.__typename = kindModel;
+            return creditCard;
+          } else {
+            return null;
+          }
+        },
+      },
+    }),
+    interfaces: () => [nodeInterface],
+  }),
+);
+
+export const TransactionByKindConnection = connectionDefinitions({
+  name: 'TransactionByKind',
+  nodeType: GraphQLNonNull(TransactionByKindType),
 });
