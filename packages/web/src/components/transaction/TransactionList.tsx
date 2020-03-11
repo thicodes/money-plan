@@ -24,25 +24,10 @@ function TransactionList(props) {
   // const [data, setData] = React.useState(React.useMemo(() => makeData(20), []));
   // console.log(data);
   const [skipPageReset, setSkipPageReset] = React.useState(false);
-  const updateMyData = (rowIndex, columnId, value) => {
-    // We also turn on the flag to not reset the page
-    setSkipPageReset(true);
-    setData(old =>
-      old.map((row, index) => {
-        if (index === rowIndex) {
-          return {
-            ...old[rowIndex],
-            [columnId]: value,
-          };
-        }
-        return row;
-      }),
-    );
-  };
   const { data, loadNext, isLoadingNext } = usePaginationFragment(
     graphql`
       fragment TransactionList_query on Query
-        @argumentDefinitions(first: { type: Int, defaultValue: 3 }, after: { type: String })
+        @argumentDefinitions(first: { type: "Int", defaultValue: 30 }, after:{ type: "String" })
         @refetchable(queryName: "TransactionListPaginationQuery") {
         transactions(first: $first, after: $after) @connection(key: "Transactions_transactions", filters: []) {
           endCursorOffset
@@ -67,15 +52,24 @@ function TransactionList(props) {
     `,
     props.query,
   );
-  const transactions = (data.transactions?.edges ?? []).map(edge => edge.node);
+  const { transactions } = data;
+  const { pageInfo } = transactions;
+  const transactionsMapEdges = (transactions?.edges ?? []).map(edge => edge.node);
+  const loadMore = () => {
+    if (isLoadingNext) {
+      return;
+    }
+    loadNext(30);
+  };
   return (
     <>
       <Table
         columns={columns}
-        data={transactions}
+        data={transactionsMapEdges}
         setData={() => {}}
-        updateMyData={updateMyData}
         skipPageReset={skipPageReset}
+        onLoadMore={loadMore}
+        pageInfo={pageInfo}
       />
     </>
   );
