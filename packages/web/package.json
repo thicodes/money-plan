@@ -74,18 +74,22 @@
     "typescript": "^3.8.3",
     "url-loader": "^2.1.0",
     "webpack": "^4.25.1",
+    "webpack-bundle-analyzer": "^3.6.1",
     "webpack-nano": "^0.7.1",
     "webpack-plugin-serve": "^0.12.0"
   },
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "prestart": "cross-env NODE_ENV=development wp --config ./webpack.deps.config.js",
+    "prebuild": "yarn build:deps",
     "build": "cross-env NODE_ENV=production wp --config ./webpack.config",
     "jest:lint": "jest --config jest-eslint.config.js",
     "now-build": "cross-env NODE_ENV=production wp --config ./webpack.config",
     "relay": "relay-compiler --watchman false --src ./src --schema ../server/data/schema.graphql --language typescript",
     "start": "cross-env NODE_ENV=development wp --config ./webpack.config",
     "test": "jest --coverage",
-    "ts:check": "tsc"
+    "ts:check": "tsc",
+    "build:deps": "wp --config ./webpack.deps.config.js"
   }
 }

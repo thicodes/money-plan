@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const { WebpackPluginServe: Serve } = require('webpack-plugin-serve');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const isDev = process.env.NODE_ENV === 'development';
 const outputPath = resolve(__dirname, 'dist');
@@ -11,7 +12,9 @@ const outputPath = resolve(__dirname, 'dist');
 const entry = isDev ? ['./src/index.tsx', 'webpack-plugin-serve/client'] : './src/index.tsx';
 
 const plugins = [
-  new HtmlWebpackPlugin(),
+  new HtmlWebpackPlugin({
+    template: './template.html',
+  }),
   new webpack.DefinePlugin({
     'process.env': {
       NODE_ENV: JSON.stringify(process.env.NODE_ENV),
@@ -24,12 +27,26 @@ if (isDev) {
     new Serve({
       hmr: true,
       historyFallback: true,
-      static: [outputPath],
+      static: [outputPath, resolve(__dirname, 'dist-dll')],
     }),
   );
 } else {
   plugins.push(new MiniCssExtractPlugin());
 }
+
+plugins.push(
+  new webpack.DllReferencePlugin({
+    manifest: require('./dist-dll/ReactStuff.json'),
+    context: process.cwd(),
+  }),
+);
+
+plugins.push(
+  new webpack.DllReferencePlugin({
+    manifest: require('./dist-dll/Styles.json'),
+    context: process.cwd(),
+  }),
+);
 
 module.exports = {
   entry,
@@ -112,7 +129,7 @@ module.exports = {
   output: {
     path: outputPath,
     publicPath: '/',
-    filename: !isDev ? 'bundle.[contenthash].js' : 'bundle.js',
+    filename: !isDev ? 'bundle.[contenthash].js' : '[name].bundle.js',
   },
   plugins,
   watch: isDev,
