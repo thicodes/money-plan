@@ -49,7 +49,7 @@ const TransactionType = registerType(
     description: 'Transaction data',
     fields: () => ({
       id: globalIdField('Transaction'),
-      ...mongooseIDResolverIDResolver,
+      ...mongooseIDResolver,
       name: {
         type: GraphQLString,
         resolve: transaction => transaction.name,
