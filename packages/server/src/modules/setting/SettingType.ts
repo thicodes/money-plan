@@ -3,6 +3,8 @@ import { globalIdField } from 'graphql-relay';
 
 import { connectionDefinitions } from '../../core/connection/CustomConnectionType';
 import { registerType, nodeInterface } from '../../interface/NodeInterface';
+import { timestamps } from '../../graphql/timestampResolver';
+import { mongooseIDResolver } from '../../graphql/mongooseIDResolver';
 
 const SettingType = registerType(
   new GraphQLObjectType({
@@ -10,10 +12,7 @@ const SettingType = registerType(
     description: 'Setting data',
     fields: () => ({
       id: globalIdField('Setting'),
-      _id: {
-        type: GraphQLString,
-        resolve: setting => setting._id,
-      },
+      ...mongooseIDResolver,
       currency: {
         type: GraphQLString,
         resolve: setting => setting.currency,
@@ -22,6 +21,7 @@ const SettingType = registerType(
         type: GraphQLBoolean,
         resolve: setting => setting.isFinishedSetup,
       },
+      ...timestamps,
     }),
     interfaces: () => [nodeInterface],
   }),

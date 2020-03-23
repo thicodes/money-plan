@@ -8,11 +8,12 @@ const schema = new mongoose.Schema(
       required: true,
     },
     date: {
-      type: String,
+      type: Number,
       required: true,
     },
-    isExpense: {
-      type: Boolean,
+    expenseOrIncome: {
+      type: String,
+      enum: ['EXPENSE', 'INCOME'],
     },
     kind: {
       type: String,
@@ -47,8 +48,8 @@ const schema = new mongoose.Schema(
 
 export interface ITransaction extends Document {
   name: string;
-  date: string;
-  isExpense: boolean;
+  date: integer;
+  expenseOrIncome: boolean;
   kind: string;
   kindModel: string;
   isPaid: boolean;

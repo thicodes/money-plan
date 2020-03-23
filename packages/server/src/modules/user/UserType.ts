@@ -3,6 +3,8 @@ import { globalIdField } from 'graphql-relay';
 
 import { connectionDefinitions } from '../../core/connection/CustomConnectionType';
 import { registerType, nodeInterface } from '../../interface/NodeInterface';
+import { timestamps } from '../../graphql/timestampResolver';
+import { mongooseIDResolver } from '../../graphql/mongooseIDResolver';
 
 const UserType = registerType(
   new GraphQLObjectType({
@@ -10,10 +12,7 @@ const UserType = registerType(
     description: 'User data',
     fields: () => ({
       id: globalIdField('User'),
-      _id: {
-        type: GraphQLString,
-        resolve: user => user._id,
-      },
+      ...mongooseIDResolver,
       name: {
         type: GraphQLString,
         resolve: user => user.name,
@@ -26,6 +25,7 @@ const UserType = registerType(
         type: GraphQLBoolean,
         resolve: user => user.active,
       },
+      ...timestamps,
     }),
     interfaces: () => [nodeInterface],
   }),

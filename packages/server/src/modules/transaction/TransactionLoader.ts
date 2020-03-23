@@ -13,8 +13,8 @@ export default class Transaction {
   id: string;
   _id: Types.ObjectId;
   name: string;
-  date: string;
-  isExpense: boolean;
+  date: integer;
+  expenseOrIncome: string;
   kind: string;
   kindModel: string;
   isPaid: boolean;
@@ -25,7 +25,7 @@ export default class Transaction {
     this._id = data._id;
     this.name = data.name;
     this.date = data.date;
-    this.isExpense = data.isExpense;
+    this.expenseOrIncome = data.expenseOrIncome;
     this.kind = data.kind;
     this.kindModel = data.kindModel;
     this.isPaid = data.isPaid;

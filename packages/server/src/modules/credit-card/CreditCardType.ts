@@ -3,20 +3,20 @@ import { globalIdField } from 'graphql-relay';
 
 import { connectionDefinitions } from '../../core/connection/CustomConnectionType';
 import { registerType, nodeInterface } from '../../interface/NodeInterface';
+import { timestamps } from '../../graphql/timestampResolver';
+import { mongooseIDResolver } from '../../graphql/mongooseIDResolver';
 
 const CreditCardType = new GraphQLObjectType({
   name: 'CreditCard',
   description: 'Credit Card data',
   fields: () => ({
     id: globalIdField('CreditCard'),
-    _id: {
-      type: GraphQLString,
-      resolve: creditCard => creditCard._id,
-    },
+    ...mongooseIDResolver,
     name: {
       type: GraphQLString,
       resolve: creditCard => creditCard.name,
     },
+    ...timestamps,
   }),
   interfaces: () => [nodeInterface],
 });

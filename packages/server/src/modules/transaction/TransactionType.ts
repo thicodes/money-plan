@@ -1,10 +1,12 @@
 import {
   GraphQLObjectType,
   GraphQLString,
+  GraphQLInt,
   GraphQLBoolean,
   GraphQLNonNull,
   GraphQLList,
   GraphQLUnionType,
+  GraphQLEnumType,
 } from 'graphql';
 import { globalIdField } from 'graphql-relay';
 
@@ -16,6 +18,8 @@ import AccountType, { AccountConnection } from '../account/AccountType';
 import CreditCardType, { CreditCardConnection } from '../credit-card/CreditCardType';
 
 import { CreditCardLoader, AccountLoader } from '../../loader';
+import { timestamps } from '../../graphql/timestampResolver';
+import { mongooseIDResolver } from '../../graphql/mongooseIDResolver';
 
 const TransactionKindUnion = new GraphQLUnionType({
   name: 'TransactionKindUnion',
@@ -27,27 +31,36 @@ const TransactionKindUnion = new GraphQLUnionType({
   },
 });
 
+export const ExpenseOrIncomeEnum = new GraphQLEnumType({
+  name: 'ExpenseOrIncomeEnum',
+  values: {
+    EXPENSE: {
+      value: 'EXPENSE',
+    },
+    INCOME: {
+      value: 'INCOME',
+    },
+  },
+});
+
 const TransactionType = registerType(
   new GraphQLObjectType({
     name: 'Transaction',
     description: 'Transaction data',
     fields: () => ({
       id: globalIdField('Transaction'),
-      _id: {
-        type: GraphQLString,
-        resolve: transaction => transaction._id,
-      },
+      ...mongooseIDResolverIDResolver,
       name: {
         type: GraphQLString,
         resolve: transaction => transaction.name,
       },
       date: {
-        type: GraphQLString,
+        type: GraphQLInt,
         resolve: transaction => transaction.date,
       },
-      isExpense: {
-        type: GraphQLBoolean,
-        resolve: transaction => transaction.isExpense,
+      expenseOrIncome: {
+        type: ExpenseOrIncomeEnum,
+        resolve: transaction => transaction.expenseOrIncome,
       },
       kind: {
         type: TransactionKindUnion,
@@ -73,6 +86,7 @@ const TransactionType = registerType(
         type: new GraphQLList(TagType),
         resolve: transaction => transaction.tags,
       },
+      ...timestamps,
     }),
     interfaces: () => [nodeInterface],
   }),

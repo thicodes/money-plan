@@ -3,16 +3,15 @@ import { globalIdField } from 'graphql-relay';
 
 import { connectionDefinitions } from '../../core/connection/CustomConnectionType';
 import { registerType, nodeInterface } from '../../interface/NodeInterface';
+import { timestamps } from '../../graphql/timestampResolver';
+import { mongooseIDResolver } from '../../graphql/mongooseIDResolver';
 
 const AccountType = new GraphQLObjectType({
   name: 'Account',
   description: 'Account data',
   fields: () => ({
     id: globalIdField('Account'),
-    _id: {
-      type: GraphQLString,
-      resolve: account => account._id,
-    },
+    ...mongooseIDResolver,
     name: {
       type: GraphQLString,
       resolve: account => account.name,
@@ -25,6 +24,7 @@ const AccountType = new GraphQLObjectType({
       type: GraphQLBoolean,
       resolve: account => account.kind,
     },
+    ...timestamps,
   }),
   interfaces: () => [nodeInterface],
 });

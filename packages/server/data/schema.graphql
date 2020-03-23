@@ -99,6 +99,11 @@ type CreditCardEdge {
   cursor: String!
 }
 
+enum ExpenseOrIncomeEnum {
+  EXPENSE
+  INCOME
+}
+
 type Mutation {
   AccountCreate(input: AccountCreateMutationInput!): AccountCreateMutationPayload
   UserChangePassword(input: UserChangePasswordInput!): UserChangePasswordPayload
@@ -160,8 +165,8 @@ type Transaction implements Node {
   id: ID!
   _id: String
   name: String
-  date: String
-  isExpense: Boolean
+  date: Int
+  expenseOrIncome: ExpenseOrIncomeEnum
   kind: TransactionKindUnion
   isPaid: Boolean
   tags: [Tag]
@@ -240,7 +245,7 @@ type TransactionConnection {
 input TransactionCreateInput {
   name: String!
   date: String!
-  isExpense: Boolean
+  expenseOrIncome: ExpenseOrIncomeEnum
   kind: String!
   kindModel: String!
   isPaid: Boolean

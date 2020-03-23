@@ -5,7 +5,7 @@ import { generateToken } from '../../../auth';
 import pubSub, { EVENTS } from '../../../pubSub';
 
 import TransactionModel from '../TransactionModel';
-import { TransactionConnection } from '../TransactionType';
+import { TransactionConnection, ExpenseOrIncomeEnum } from '../TransactionType';
 import * as TransactionLoader from '../TransactionLoader';
 
 export default mutationWithClientMutationId({
@@ -17,8 +17,8 @@ export default mutationWithClientMutationId({
     date: {
       type: new GraphQLNonNull(GraphQLString),
     },
-    isExpense: {
-      type: GraphQLBoolean,
+    expenseOrIncome: {
+      type: ExpenseOrIncomeEnum,
     },
     kind: {
       type: new GraphQLNonNull(GraphQLString),
@@ -33,11 +33,11 @@ export default mutationWithClientMutationId({
       type: GraphQLString,
     },
   },
-  mutateAndGetPayload: async ({ name, date, isExpense, kind, kindModel, isPaid, tags }) => {
+  mutateAndGetPayload: async ({ name, date, expenseOrIncome, kind, kindModel, isPaid, tags }) => {
     const transaction = new TransactionModel({
       name,
       date,
-      isExpense,
+      expenseOrIncome,
       kind,
       kindModel,
       isPaid,

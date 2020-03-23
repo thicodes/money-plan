@@ -831,19 +831,19 @@
               "args": [],
               "type": {
                 "kind": "SCALAR",
-                "name": "String",
+                "name": "Int",
                 "ofType": null
               },
               "isDeprecated": false,
               "deprecationReason": null
             },
             {
-              "name": "isExpense",
+              "name": "expenseOrIncome",
               "description": null,
               "args": [],
               "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
+                "kind": "ENUM",
+                "name": "ExpenseOrIncomeEnum",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -899,6 +899,29 @@
             }
           ],
           "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "ENUM",
+          "name": "ExpenseOrIncomeEnum",
+          "description": null,
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "EXPENSE",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "INCOME",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
           "possibleTypes": null
         },
         {
@@ -2274,11 +2297,11 @@
               "defaultValue": null
             },
             {
-              "name": "isExpense",
+              "name": "expenseOrIncome",
               "description": null,
               "type": {
-                "kind": "SCALAR",
-                "name": "Boolean",
+                "kind": "ENUM",
+                "name": "ExpenseOrIncomeEnum",
                 "ofType": null
               },
               "defaultValue": null
