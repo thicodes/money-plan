@@ -11,7 +11,7 @@ export const TransactionCreate = graphql`
         node {
           id
           date
-          isExpense
+          expenseOrIncome
         }
       }
     }

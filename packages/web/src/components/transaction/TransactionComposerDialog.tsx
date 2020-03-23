@@ -1,5 +1,4 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -14,13 +13,15 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+// import TextField from '@material-ui/core/TextField';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import { useMutation } from 'react-relay/lib/relay-experimental';
 import { graphql, useFragment } from 'react-relay/hooks';
 import { TransactionCreate, updater } from './TransactionCreateMutation';
-import { useFormik, FormikProvider } from 'formik';
+import { useFormik, FormikProvider, Formik, FastField, Form } from 'formik';
 import * as yup from 'yup';
 import { Button } from '../ui';
+import TextField from '../form/TextField';
 
 import { TransactionCreateMutation } from './__generated__/TransactionCreateMutation.graphql'
 import { TransactionComposerDialog_query$key } from './__generated__/TransactionComposerDialog_query.graphql'
@@ -31,7 +32,7 @@ type Props = {
 }
 
 type Values = {
-  isExpense: boolean;
+  expenseOrIncome: "EXPENSE" | "INCOME" | null;
   name: string;
   date: string;
 };
@@ -74,12 +75,13 @@ export default function TransactionComposerDialog({ query, onCancel }: Props) {
   );
 
   const onSubmit = (values: Values, formikAction) => {
+    console.log("submit");
     const config = {
       variables: {
         input: {
-          isExpense: values.isExpense,
+          expenseOrIncome: values.expenseOrIncome,
           name: values.name,
-          date: values.date,
+          date: new Date(values.date).getTime(),
           kind: values.kind,
           kindModel: values.kindModel,
         },
@@ -93,86 +95,102 @@ export default function TransactionComposerDialog({ query, onCancel }: Props) {
 
     transactionCreate(config);
   };
-  const formik = useFormik<Values>({
-    initialValues: {
-      isExpense: true,
+  const initialValues = {
+      expenseOrIncome: "",
       name: '',
       date: '',
       kind: '',
       kindModel: '',
-    },
-    validateOnMount: true,
-    validateOnSchema: yup.object().shape({
+    };
+  const validationSchema = yup.object().shape({
       name: yup.string().required('Name is required'),
       password: yup.string().required('Password is required'),
-    }),
-    onSubmit,
-  });
-
-  const { values, setFieldValue, handleSubmit, isValid } = formik;
+    });
 
   const transactionsKindMapEdges = (transactionsByKind?.edges ?? []).map(edge => ({
     ...edge.node,
     kind: edge.node.kind.edges.map(kindEdges => kindEdges.node),
   }));
   return (
-    <div>
-      <FormikProvider value={formik}>
-        <Dialog open={true} onClose={onCancel} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">New Transaction</DialogTitle>
-          <DialogContent>
-            <FormControl component="fieldset">
+    <Dialog open={true} onClose={onCancel} aria-labelledby="form-dialog-title">
+      <DialogTitle id="form-dialog-title">New Transaction</DialogTitle>
+      <Formik initialValues={initialValues} onSubmit={onSubmit}> 
+        {({setFieldValue, values, handleSubmit, handleChange}) => (
+        <Form>
+            <DialogContent>
+              <FormControl component="fieldset" fullWidth>
               <FormLabel component="legend">This transaction is:</FormLabel>
-              <RadioGroup
-                aria-label="expense/income"
-                value={values.isExpense}
-                onChange={e => setFieldValue('isExpense', Boolean(e.target.value))}
-              >
-                <FormControlLabel value={true} control={<Radio />} label="Expense" />
-                <FormControlLabel value={false} control={<Radio />} label="Income" />
-              </RadioGroup>
-            </FormControl>
+                <RadioGroup
+                  aria-label="expense/income"
+                  name="expenseOrIncome"
+                  value={values.expenseOrIncome}
+                  defaultValue={"EXPENSE"}
+                  onChange={handleChange}
+                >
+                  <FormControlLabel value="EXPENSE" control={<Radio />} label="Expense" />
+                  <FormControlLabel value="INCOME" control={<Radio />} label="Income" />
+                </RadioGroup>
+              </FormControl>
+              <TextField
+                autoFocus
+                label="name"
+                name="name"
+                onChange={handleChange}
+                value={values.name}
+                fullWidth
+              />
+  
             <TextField
-              autoFocus
-              margin="dense"
-              label="name"
-              value={values.name}
-              onChange={e => setFieldValue('name', e.target.value)}
-              fullWidth
-            />
-            <TextField
-              label="date"
-              type="date"
-              value={values.date}
-              onChange={e => setFieldValue('date', e.target.value)}
-            />
-            <FormControl>
-              <InputLabel htmlFor="grouped-select">Grouping</InputLabel>
-              <Select defaultValue="" onChange={e => setFieldValue('kind', e.target.value)} input={<Input id="grouped-select" />}>
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                {transactionsKindMapEdges.map(({ kindModel, kind }, idx) => (
-                  <span key={idx}>
-                    <ListSubheader>{kindModel}</ListSubheader>
-                    {kind.map(({id, name}) => (
-                      <MenuItem value={id} key={id}>{name}</MenuItem>
-                    ))}
-                  </span>
-                ))}
-              </Select>
-            </FormControl>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={onCancel} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={handleSubmit} color="primary">
-              Submit
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </FormikProvider>
-    </div>
+                label="Date"
+                type="date"
+                name="date"
+                onChange={handleChange}
+                value={values.date}
+                margin="dense"
+                InputLabelProps={{ shrink: true }}
+                fullWidth
+              />
+              <FormControl style={{minWidth: 200}}>
+                <InputLabel htmlFor="grouped-select">Account/Card</InputLabel>
+                <Select 
+                  defaultValue="" 
+                  onChange={e => {
+                      const selectedId = e.target.value;
+                      setFieldValue('kind', selectedId)
+                      if (selectedId) {
+                        const getParentFromChildren = transactionsKindMapEdges.find(transaction => transaction.kind.find(kind => kind.id === selectedId))
+                        setFieldValue('kindModel', getParentFromChildren.kindModel)
+                      } else {
+                        setFieldValue('kindModel', "")
+                      } 
+                    }
+                  } 
+                  input={<Input id="grouped-select" />}>
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  {transactionsKindMapEdges.map(({ kindModel, kind }) => {
+                    return [
+                      <ListSubheader>{kindModel}</ListSubheader>,
+                      kind.map(({id, name}) => (
+                        <MenuItem value={id} key={id}>{name}</MenuItem>
+                      ))
+                    ]
+                  })}
+                </Select>
+              </FormControl>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={onCancel} color="primary">
+                Cancel
+              </Button>
+              <Button type="submit" onClick={handleSubmit} color="primary">
+                Submit
+              </Button>
+            </DialogActions>
+          </Form>
+        )}
+      </Formik>
+    </Dialog>
   );
 }
