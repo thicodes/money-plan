@@ -81,7 +81,7 @@ export default function TransactionComposerDialog({ query, onCancel }: Props) {
         input: {
           expenseOrIncome: values.expenseOrIncome,
           name: values.name,
-          date: new Date(values.date).getTime(),
+          date: new Date(values.date),
           kind: values.kind,
           kindModel: values.kindModel,
         },
@@ -140,7 +140,7 @@ export default function TransactionComposerDialog({ query, onCancel }: Props) {
                 fullWidth
               />
   
-            <TextField
+              <TextField
                 label="Date"
                 type="date"
                 name="date"

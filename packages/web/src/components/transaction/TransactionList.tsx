@@ -6,16 +6,20 @@ import { usePaginationFragment, graphql } from 'react-relay/hooks';
 import { TransactionList_query$key } from './__generated__/TransactionList_query.graphql'
 import { TransactionListPaginationQuery  } from './__generated__/TransactionListPaginationQuery.graphql';
 
+import { useTranslation } from "react-i18next";
+
 type Props = {
   query: TransactionList_query$key;
 };
 
 function TransactionList(props: Props) {
+  const { i18n } = useTranslation();
   const columns = React.useMemo(
     () => [
       {
         Header: 'Date',
         accessor: 'date',
+        Cell: ({ cell: { value } }) => (value ? Intl.DateTimeFormat(i18n.language).format(new Date(value))  : '')
       },
       {
         Header: 'Name',

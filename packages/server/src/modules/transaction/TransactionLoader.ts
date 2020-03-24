@@ -13,7 +13,7 @@ export default class Transaction {
   id: string;
   _id: Types.ObjectId;
   name: string;
-  date: integer;
+  date: Date;
   expenseOrIncome: string;
   kind: string;
   kindModel: string;

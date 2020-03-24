@@ -6,6 +6,8 @@ type Account implements Node {
   name: String
   bank: String
   kind: Boolean
+  createdAt: String
+  updatedAt: String
 }
 
 """A connection to a list of items."""
@@ -62,6 +64,8 @@ type CreditCard implements Node {
   id: ID!
   _id: String
   name: String
+  createdAt: String
+  updatedAt: String
 }
 
 """A connection to a list of items."""
@@ -157,6 +161,8 @@ type Tag implements Node {
   id: ID!
   _id: String
   name: String
+  createdAt: String
+  updatedAt: String
 }
 
 """Transaction data"""
@@ -165,11 +171,13 @@ type Transaction implements Node {
   id: ID!
   _id: String
   name: String
-  date: Int
+  date: String
   expenseOrIncome: ExpenseOrIncomeEnum
   kind: TransactionKindUnion
   isPaid: Boolean
   tags: [Tag]
+  createdAt: String
+  updatedAt: String
 }
 
 """Transaction by kind data"""
@@ -280,6 +288,8 @@ type User implements Node {
   name: String
   email: String
   active: Boolean
+  createdAt: String
+  updatedAt: String
 }
 
 type UserAddedPayload {

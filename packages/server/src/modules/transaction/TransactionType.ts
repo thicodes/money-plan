@@ -5,6 +5,7 @@ import {
   GraphQLBoolean,
   GraphQLNonNull,
   GraphQLList,
+  GraphQLFloat,
   GraphQLUnionType,
   GraphQLEnumType,
 } from 'graphql';
@@ -55,8 +56,8 @@ const TransactionType = registerType(
         resolve: transaction => transaction.name,
       },
       date: {
-        type: GraphQLInt,
-        resolve: transaction => transaction.date,
+        type: GraphQLString,
+        resolve: transaction => (transaction.date ? transaction.date.toISOString() : null),
       },
       expenseOrIncome: {
         type: ExpenseOrIncomeEnum,
