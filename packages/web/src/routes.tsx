@@ -30,7 +30,7 @@ export const routes = [
           RootQuery,
           {},
           {
-            fetchPolicy: 'network-only',
+            fetchPolicy: 'store-or-network',
           },
         ),
       };
@@ -53,7 +53,7 @@ export const routes = [
               TransactionQuery,
               {},
               {
-                fetchPolicy: 'network-only',
+                fetchPolicy: 'store-or-network',
               },
             ),
           };
@@ -74,7 +74,7 @@ export const routes = [
                   TransactionComposerDialogQuery,
                   {},
                   {
-                    fetchPolicy: 'network-only',
+                    fetchPolicy: 'store-or-network',
                   },
                 ),
               };
