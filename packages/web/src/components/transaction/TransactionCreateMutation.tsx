@@ -10,6 +10,7 @@ export const TransactionCreate = graphql`
       transactionEdge {
         node {
           id
+          name
           date
           expenseOrIncome
         }
