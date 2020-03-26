@@ -5,7 +5,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -13,36 +12,44 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-// import TextField from '@material-ui/core/TextField';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import { useMutation } from 'react-relay/lib/relay-experimental';
-import { graphql, useFragment } from 'react-relay/hooks';
+import { graphql, useFragment, usePreloadedQuery } from 'react-relay/hooks';
 import { TransactionCreate, updater } from './TransactionCreateMutation';
-import { useFormik, FormikProvider, Formik, FastField, Form } from 'formik';
+import { Formik, Form } from 'formik';
 import * as yup from 'yup';
 import { Button } from '../ui';
 import TextField from '../form/TextField';
+import { useHistory } from '../../routing/useHistory';
 
-import { TransactionCreateMutation } from './__generated__/TransactionCreateMutation.graphql'
-import { TransactionComposerDialog_query$key } from './__generated__/TransactionComposerDialog_query.graphql'
+import { TransactionCreateMutation } from './__generated__/TransactionCreateMutation.graphql';
+import { TransactionComposerDialogQuery } from './__generated__/TransactionComposerDialogQuery.graphql';
 
 type Props = {
-  query: TransactionComposerDialog_query$key;
-  onCancel: () => void
-}
+  prepared: {
+    TransactionComposerDialogQuery: any;
+  };
+};
 
 type Values = {
-  expenseOrIncome: "EXPENSE" | "INCOME" | null;
+  expenseOrIncome: 'EXPENSE' | 'INCOME' | null;
   name: string;
   date: string;
 };
 
-export default function TransactionComposerDialog({ query, onCancel }: Props) {
+export default function TransactionComposerDialog({ prepared }: Props) {
   const [transactionCreate, isPending] = useMutation<TransactionCreateMutation>(TransactionCreate);
 
-  const { transactionsByKind } = useFragment(
+  const history = useHistory();
+
+  const onClose = () => {
+    history.push('/transactions');
+  }
+
+  // const [isOpenTransactionComposer, setIsOpenTransactionComposer] = React.useState(false);
+  const { transactionsByKind } = usePreloadedQuery<TransactionComposerDialogQuery>(
     graphql`
-      fragment TransactionComposerDialog_query on Query {
+      query TransactionComposerDialogQuery {
         transactionsByKind {
           edges {
             node {
@@ -71,11 +78,10 @@ export default function TransactionComposerDialog({ query, onCancel }: Props) {
         }
       }
     `,
-    query,
+    prepared.transactionComposerDialogQuery,
   );
 
   const onSubmit = (values: Values, formikAction) => {
-    console.log("submit");
     const config = {
       variables: {
         input: {
@@ -96,27 +102,27 @@ export default function TransactionComposerDialog({ query, onCancel }: Props) {
     transactionCreate(config);
   };
   const initialValues = {
-      expenseOrIncome: "",
-      name: '',
-      date: '',
-      kind: '',
-      kindModel: '',
-    };
+    expenseOrIncome: '',
+    name: '',
+    date: '',
+    kind: '',
+    kindModel: '',
+  };
   const validationSchema = yup.object().shape({
-      name: yup.string().required('Name is required'),
-      password: yup.string().required('Password is required'),
-    });
+    name: yup.string().required('Name is required'),
+    password: yup.string().required('Password is required'),
+  });
 
   const transactionsKindMapEdges = (transactionsByKind?.edges ?? []).map(edge => ({
     ...edge.node,
     kind: edge.node.kind.edges.map(kindEdges => kindEdges.node),
   }));
   return (
-    <Dialog open={true} onClose={onCancel} aria-labelledby="form-dialog-title">
+    <Dialog open onBackdropClick={onClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">New Transaction</DialogTitle>
-      <Formik initialValues={initialValues} onSubmit={onSubmit}> 
+      <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {({setFieldValue, values, handleSubmit, handleChange}) => (
-        <Form>
+          <Form>
             <DialogContent>
               <FormControl component="fieldset" fullWidth>
               <FormLabel component="legend">This transaction is:</FormLabel>
@@ -124,7 +130,7 @@ export default function TransactionComposerDialog({ query, onCancel }: Props) {
                   aria-label="expense/income"
                   name="expenseOrIncome"
                   value={values.expenseOrIncome}
-                  defaultValue={"EXPENSE"}
+                  defaultValue="EXPENSE"
                   onChange={handleChange}
                 >
                   <FormControlLabel value="EXPENSE" control={<Radio />} label="Expense" />
@@ -139,7 +145,7 @@ export default function TransactionComposerDialog({ query, onCancel }: Props) {
                 value={values.name}
                 fullWidth
               />
-  
+
               <TextField
                 label="Date"
                 type="date"
@@ -152,8 +158,8 @@ export default function TransactionComposerDialog({ query, onCancel }: Props) {
               />
               <FormControl style={{minWidth: 200}}>
                 <InputLabel htmlFor="grouped-select">Account/Card</InputLabel>
-                <Select 
-                  defaultValue="" 
+                <Select
+                  defaultValue=""
                   onChange={e => {
                       const selectedId = e.target.value;
                       setFieldValue('kind', selectedId)
@@ -162,9 +168,9 @@ export default function TransactionComposerDialog({ query, onCancel }: Props) {
                         setFieldValue('kindModel', getParentFromChildren.kindModel)
                       } else {
                         setFieldValue('kindModel', "")
-                      } 
+                      }
                     }
-                  } 
+                  }
                   input={<Input id="grouped-select" />}>
                   <MenuItem value="">
                     <em>None</em>
@@ -181,7 +187,7 @@ export default function TransactionComposerDialog({ query, onCancel }: Props) {
               </FormControl>
             </DialogContent>
             <DialogActions>
-              <Button onClick={onCancel} color="primary">
+              <Button onClick={onClose} color="primary">
                 Cancel
               </Button>
               <Button type="submit" onClick={handleSubmit} color="primary">

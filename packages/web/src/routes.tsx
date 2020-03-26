@@ -43,7 +43,6 @@ export const routes = [
       },
       {
         path: '/transactions',
-        exact: true,
         component: JSResource('Transactions', () => import('./components/transaction/Transaction')),
         prepare: () => {
           const TransactionQuery = require('./components/transaction/__generated__/TransactionQuery.graphql');
@@ -59,6 +58,29 @@ export const routes = [
             ),
           };
         },
+        routes: [
+          {
+            path: '/transactions/add',
+            exact: false,
+            component: JSResource('TransactionsAdd', () =>
+              import('./components/transaction/TransactionComposerDialog'),
+            ),
+            prepare: () => {
+              const TransactionComposerDialogQuery = require('./components/transaction/__generated__/TransactionComposerDialogQuery.graphql');
+
+              return {
+                transactionComposerDialogQuery: preloadQuery(
+                  Environment,
+                  TransactionComposerDialogQuery,
+                  {},
+                  {
+                    fetchPolicy: 'network-only',
+                  },
+                ),
+              };
+            },
+          },
+        ],
       },
     ],
   },
