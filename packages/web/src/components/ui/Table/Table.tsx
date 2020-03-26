@@ -110,7 +110,6 @@ const Table = ({ columns, data, setData, skipPageReset, onLoadMore, pageInfo }) 
               return (
                 <TableRow {...row.getRowProps()}>
                   {row.cells.map(cell => {
-                    console.log(cell);
                     return <TableCell {...cell.getCellProps()}>{cell.render('Cell')}</TableCell>;
                   })}
                 </TableRow>
