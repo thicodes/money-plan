@@ -95,7 +95,7 @@ export default function TransactionComposerDialog({ prepared }: Props) {
       updater,
       onCompleted: () => {
         formikAction.resetForm();
-        onCancel();
+        onClose();
       },
     };
 
