@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { usePreloadedQuery, graphql } from 'react-relay/hooks';
 import { renderRoutes } from 'react-router-config';
-import { Card, Button, Table, Spinner } from '../ui';
+import { Card, Button, Table } from '../ui';
 import TransactionList from './TransactionList';
 // import TransactionComposerDialog from './TransactionComposerDialog';
 import { Flex, Text } from 'rebass';

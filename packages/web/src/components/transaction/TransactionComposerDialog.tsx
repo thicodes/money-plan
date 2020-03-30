@@ -18,7 +18,7 @@ import { graphql, useFragment, usePreloadedQuery } from 'react-relay/hooks';
 import { TransactionCreate, updater } from './TransactionCreateMutation';
 import { Formik, Form } from 'formik';
 import * as yup from 'yup';
-import { Button } from '../ui';
+import { Button, Spinner } from '../ui';
 import TextField from '../form/TextField';
 import { useHistory } from '../../routing/useHistory';
 
@@ -201,6 +201,6 @@ function TransactionComposerDialog({ prepared }: Props) {
   );
 }
 
-const SuspenseTransactionComposerDialog = (props) => <React.Suspense fallback={<div>Loading Transaction...</div>}><TransactionComposerDialog {...props} /></React.Suspense>
+const SuspenseTransactionComposerDialog = (props) => <React.Suspense fallback={<Spinner />}><TransactionComposerDialog {...props} /></React.Suspense>
 
 export default SuspenseTransactionComposerDialog;
