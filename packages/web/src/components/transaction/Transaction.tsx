@@ -13,11 +13,11 @@ type Props = {
   prepared: {
     transactionQuery: any;
   };
+  children: React.ReactNode;
 };
 
-function Transaction(route: Props) {
-  console.log('Transaction', route);
-  const { prepared, children } = route;
+function Transaction(props: Props) {
+  const { prepared, children } = props;
 
   const data = usePreloadedQuery<TransactionQuery>(
     graphql`
@@ -31,9 +31,11 @@ function Transaction(route: Props) {
   return (
     <>
       <Flex>
-        <Text flex={1}>Transactions</Text>
-        <Suspense fallback={<Spinner />}>{children}</Suspense>
-        <Link variant="contained" color="primary" as={Button} to="/transactions/add">
+        <Text fontSize={4} flex={1}>
+          Transactions
+        </Text>
+        {children}
+        <Link variant="contained" color="primary" as={Button} to="/transactions/add" color="primary">
           + Add
         </Link>
       </Flex>

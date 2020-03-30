@@ -27,7 +27,7 @@ import { TransactionComposerDialogQuery } from './__generated__/TransactionCompo
 
 type Props = {
   prepared: {
-    TransactionComposerDialogQuery: any;
+    transactionComposerDialogQuery: any;
   };
 };
 
@@ -37,7 +37,7 @@ type Values = {
   date: string;
 };
 
-export default function TransactionComposerDialog({ prepared }: Props) {
+function TransactionComposerDialog({ prepared }: Props) {
   const [transactionCreate, isPending] = useMutation<TransactionCreateMutation>(TransactionCreate);
 
   const history = useHistory();
@@ -200,3 +200,7 @@ export default function TransactionComposerDialog({ prepared }: Props) {
     </Dialog>
   );
 }
+
+const SuspenseTransactionComposerDialog = (props) => <React.Suspense fallback={<div>Loading Transaction...</div>}><TransactionComposerDialog {...props} /></React.Suspense>
+
+export default SuspenseTransactionComposerDialog;
