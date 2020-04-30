@@ -5,7 +5,14 @@ import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import styled from 'styled-components';
 import { Text } from 'rebass';
+
+const AppBarStyled = styled(AppBar)`
+  background: #fff;
+  box-shadow: none;
+  border-bottom: 1px solid #e5e7eb;
+`;
 
 function NavBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -24,7 +31,7 @@ function NavBar() {
 
   return (
     <>
-      <AppBar position="static" color="primary">
+      <AppBarStyled position="static" color="primary">
         <Toolbar>
           <Text flexGrow={1}>Money Plan</Text>
           <IconButton
@@ -38,7 +45,7 @@ function NavBar() {
             <AccountCircle />
           </IconButton>
         </Toolbar>
-      </AppBar>
+      </AppBarStyled>
       <Menu
         anchorEl={anchorEl}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}

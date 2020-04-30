@@ -11938,6 +11938,11 @@ rfc6902@^3.0.1:
   resolved "https://registry.yarnpkg.com/rfc6902/-/rfc6902-3.0.4.tgz#82965f13536fd20cb7799ce0376e9ce7cd3ebfe6"
   integrity sha512-OnzreaZXrwT5w2ikKXWr5QcuI7NZpL+J3hIkAwozjOnKVUL7fPsB8Vcmu8YBiiou1/r3V0Jc0T1uQDyfAPvLzA==
 
+rifm@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/rifm/-/rifm-0.11.0.tgz#817a3f3319f2c3461ca42630dfe9f0c5cb84288b"
+  integrity sha512-h1bkVl1n69e7hYErPZF1rdhq6mTeUKecSsfimo++caU/gkAje5M8wepyKVaoQ8oLSgoC1L/2EGCr+vYAYgaM3A==
+
 rimraf@2.6.3:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.3.tgz#b2d104fe0d8fb27cf9e0a1cda8262dd3833c6cab"

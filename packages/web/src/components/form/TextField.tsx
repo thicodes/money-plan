@@ -2,7 +2,7 @@ import React from 'react';
 import TextFieldMaterial from '@material-ui/core/TextField';
 import { useField } from 'formik';
 
-type Props = {
+export type Props = {
   name: string;
   value: string;
   onChange: () => void;
@@ -14,4 +14,4 @@ export const TextField = (props: Props) => {
   return <TextFieldMaterial name={name} onChange={onChange} value={value} {...rest} />;
 };
 
-export default React.memo(TextField);
+export default TextField;

@@ -3,9 +3,8 @@ import { connectionArgs, fromGlobalId } from 'graphql-relay';
 
 import UserType, { UserConnection } from '../modules/user/UserType';
 import TransactionType, {
-  TransactionByKindType,
-  TransactionByKindConnection,
   TransactionConnection,
+  TransactionByKindConnection,
 } from '../modules/transaction/TransactionType';
 
 import { nodeField } from '../interface/NodeInterface';
@@ -60,5 +59,8 @@ export default new GraphQLObjectType({
         };
       },
     },
+    // transactionsTotal: {
+    //   type: TransactionsTotal
+    // }
   }),
 });

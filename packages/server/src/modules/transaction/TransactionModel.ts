@@ -7,6 +7,10 @@ const schema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    amount: {
+      type: Number,
+      default: 0,
+    },
     date: {
       type: Date,
       required: true,
@@ -48,6 +52,7 @@ const schema = new mongoose.Schema(
 
 export interface ITransaction extends Document {
   name: string;
+  amount: number;
   date: Date;
   expenseOrIncome: boolean;
   kind: string;

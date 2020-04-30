@@ -20,6 +20,7 @@ import { Formik, Form } from 'formik';
 import * as yup from 'yup';
 import { Button, Spinner } from '../ui';
 import TextField from '../form/TextField';
+import CurrencyField from '../form/CurrencyField';
 import { useHistory } from '../../routing/useHistory';
 
 import { TransactionCreateMutation } from './__generated__/TransactionCreateMutation.graphql';
@@ -34,6 +35,7 @@ type Props = {
 type Values = {
   expenseOrIncome: 'EXPENSE' | 'INCOME' | null;
   name: string;
+  amount: string;
   date: string;
 };
 
@@ -87,6 +89,7 @@ function TransactionComposerDialog({ prepared }: Props) {
         input: {
           expenseOrIncome: values.expenseOrIncome,
           name: values.name,
+          amount: values.amount,
           date: new Date(values.date),
           kind: values.kind,
           kindModel: values.kindModel,
@@ -104,6 +107,7 @@ function TransactionComposerDialog({ prepared }: Props) {
   const initialValues = {
     expenseOrIncome: '',
     name: '',
+    amount: "",
     date: '',
     kind: '',
     kindModel: '',
@@ -145,7 +149,12 @@ function TransactionComposerDialog({ prepared }: Props) {
                 value={values.name}
                 fullWidth
               />
-
+              <CurrencyField
+                label="amount"
+                name="amount"
+                onChange={handleChange}
+                value={values.amount}
+              />
               <TextField
                 label="Date"
                 type="date"

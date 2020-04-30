@@ -14,6 +14,9 @@ export default mutationWithClientMutationId({
     name: {
       type: new GraphQLNonNull(GraphQLString),
     },
+    amountInCents: {
+      type: new GraphQLNonNull(GraphQLFloat),
+    },
     date: {
       type: new GraphQLNonNull(GraphQLString),
     },
@@ -33,9 +36,10 @@ export default mutationWithClientMutationId({
       type: GraphQLString,
     },
   },
-  mutateAndGetPayload: async ({ name, date, expenseOrIncome, kind, kindModel, isPaid, tags }) => {
+  mutateAndGetPayload: async ({ name, amountInCents, date, expenseOrIncome, kind, kindModel, isPaid, tags }) => {
     const transaction = new TransactionModel({
       name,
+      amountInCents,
       date,
       expenseOrIncome,
       kind,

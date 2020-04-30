@@ -55,6 +55,10 @@ const TransactionType = registerType(
         type: GraphQLString,
         resolve: transaction => transaction.name,
       },
+      amount: {
+        type: GraphQLFloat,
+        resolve: transaction => transaction.amount,
+      },
       date: {
         type: GraphQLString,
         resolve: transaction => (transaction.date ? transaction.date.toISOString() : null),
@@ -149,3 +153,56 @@ export const TransactionByKindConnection = connectionDefinitions({
   name: 'TransactionByKind',
   nodeType: GraphQLNonNull(TransactionByKindType),
 });
+
+const TransactionTotal = registerType(
+  new GraphQLObjectType({
+    name: 'TransactionTotal',
+    description: 'Transaction total data',
+    fields: () => ({
+      id: globalIdField('Transaction'),
+      ...mongooseIDResolver,
+      name: {
+        type: GraphQLString,
+        resolve: transaction => transaction.name,
+      },
+      amount: {
+        type: GraphQLFloat,
+        resolve: transaction => transaction.amount,
+      },
+      date: {
+        type: GraphQLString,
+        resolve: transaction => (transaction.date ? transaction.date.toISOString() : null),
+      },
+      expenseOrIncome: {
+        type: ExpenseOrIncomeEnum,
+        resolve: transaction => transaction.expenseOrIncome,
+      },
+      kind: {
+        type: TransactionKindUnion,
+        resolve: async ({ kind, kindModel }, _, context) => {
+          if (kindModel === 'Account') {
+            const account = await AccountLoader.load(context, kind);
+            account.__typename = kindModel;
+            return account;
+          } else if (kindModel === 'CreditCard') {
+            const creditCard = await CreditCardLoader.load(context, kind);
+            creditCard.__typename = kindModel;
+            return creditCard;
+          } else {
+            return null;
+          }
+        },
+      },
+      isPaid: {
+        type: GraphQLBoolean,
+        resolve: transaction => transaction.isPaid,
+      },
+      tags: {
+        type: new GraphQLList(TagType),
+        resolve: transaction => transaction.tags,
+      },
+      ...timestamps,
+    }),
+    interfaces: () => [nodeInterface],
+  }),
+);

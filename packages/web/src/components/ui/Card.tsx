@@ -4,7 +4,15 @@ import { Card as MUICard } from '@material-ui/core';
 import { CardContent } from '@material-ui/core';
 import { flexbox, space, layout, color, justifyContent, FlexProps } from 'styled-system';
 
-const CardStyled = styled(MUICard)(flexbox, space, layout, color);
+const CardStyled = styled(MUICard)`
+  ${flexbox}
+  ${space}
+  ${layout}
+  ${color}
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+  border-bottom: 1px solid #e5e7eb;
+  border-radius: .375rem;
+`;
 
 type CardType = {
   children: React.ReactNode;

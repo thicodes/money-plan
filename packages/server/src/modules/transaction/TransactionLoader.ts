@@ -13,6 +13,7 @@ export default class Transaction {
   id: string;
   _id: Types.ObjectId;
   name: string;
+  amount: number;
   date: Date;
   expenseOrIncome: string;
   kind: string;
@@ -24,6 +25,7 @@ export default class Transaction {
     this.id = data._id;
     this._id = data._id;
     this.name = data.name;
+    this.amount = data.amount;
     this.date = data.date;
     this.expenseOrIncome = data.expenseOrIncome;
     this.kind = data.kind;
